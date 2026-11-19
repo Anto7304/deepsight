@@ -1,0 +1,23 @@
+{
+  "ArtifactName": "payments-worker-image",
+  "CreatedAt": "2026-11-19T21:34:57Z",
+  "Results": [
+    {
+      "Target": "application packages",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2021-44228",
+          "PkgName": "log4j-core",
+          "InstalledVersion": "2.14.1",
+          "FixedVersion": "2.17.1",
+          "Title": "Apache Log4j remote code execution",
+          "CVSS": {
+            "nvd": {
+              "V3Score": 10.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

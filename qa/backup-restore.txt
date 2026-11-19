@@ -1,0 +1,13 @@
+# 2026-11-15T13:46:36Z  source: SQLite database seeded by the synthetic demo (one backup, three restore targets)
+$ python scripts/backup.py backup backup.json
+{"sha256": "5409e0839c3a967d8fccccc45dc461a1870869c73d7e30c6c3f93fd057a77d89", "tables": 24}
+$ python scripts/backup.py check backup.json        # restore into a temporary SQLite DB and compare every table
+{"verified": true, "tables": 24, "rows": 3203, "evidence_files": 1}
+$ ASIVM_RESTORE_DATABASE_URL=sqlite:///new.db ASIVM_RESTORE_DATA_DIR=./evidence python scripts/backup.py restore backup.json
+{"verified": true, "tables": 24, "rows": 3203, "evidence_files": 1}
+$ ASIVM_RESTORE_DATABASE_URL=postgresql+psycopg2://…/dsrestore ASIVM_RESTORE_DATA_DIR=./evidence-pg python scripts/backup.py restore backup.json   # cross-database, empty PostgreSQL 16.15
+{"verified": true, "tables": 24, "rows": 3203, "evidence_files": 1}
+$ (same restore again into the now non-empty PostgreSQL target)
+ValueError: Restore target must be empty
+$ (backup file altered after its .sha256 was written)
+ValueError: Backup checksum mismatch

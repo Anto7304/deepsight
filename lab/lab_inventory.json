@@ -1,0 +1,178 @@
+[
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "lab-mqtt-01"
+      ],
+      "ip": [
+        "172.28.50.13"
+      ],
+      "mac": [
+        "02:42:ac:1c:32:0d"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "owner": "Lab",
+      "criticality": 3,
+      "config": {
+        "vendor": "Eclipse",
+        "model": "Mosquitto broker",
+        "default_credentials": "n/a (anonymous access)",
+        "telnet_enabled": "no",
+        "lifecycle_source": "lab scenario ground truth (emulated)"
+      },
+      "services": [
+        {
+          "port": 1883,
+          "name": "mqtt",
+          "tls": false
+        }
+      ]
+    }
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "lab-gateway-01"
+      ],
+      "ip": [
+        "172.28.50.12"
+      ],
+      "mac": [
+        "02:42:ac:1c:32:0c"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "owner": "Lab",
+      "criticality": 3,
+      "config": {
+        "vendor": "Nordic Sensors",
+        "model": "TG-200",
+        "default_credentials": "no",
+        "telnet_enabled": "no",
+        "lifecycle_source": "lab scenario ground truth (emulated)"
+      },
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "lab-mqtt-01"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "lab-camera-01"
+      ],
+      "ip": [
+        "172.28.50.10"
+      ],
+      "mac": [
+        "02:42:ac:1c:32:0a"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "owner": "Lab",
+      "criticality": 2,
+      "software": [
+        {
+          "product": "Hikvision firmware",
+          "version": "5.5.101"
+        }
+      ],
+      "config": {
+        "vendor": "Hikvision",
+        "model": "DS-2CD2043",
+        "default_credentials": "yes",
+        "telnet_enabled": "no",
+        "lifecycle_source": "lab scenario ground truth (emulated)",
+        "scenario_note": "Synthetic inventory assertions; live responder requires RTSP authentication."
+      },
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "lab-gateway-01"
+          }
+        }
+      ],
+      "services": [
+        {
+          "port": 554,
+          "name": "rtsp",
+          "auth_required": false
+        },
+        {
+          "port": 80,
+          "name": "http",
+          "exposure": "external"
+        }
+      ]
+    }
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "lab-telnet-01"
+      ],
+      "ip": [
+        "172.28.50.11"
+      ],
+      "mac": [
+        "02:42:ac:1c:32:0b"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "owner": "Lab",
+      "criticality": 2,
+      "config": {
+        "vendor": "Acme Access",
+        "model": "legacy reader",
+        "default_credentials": "yes",
+        "telnet_enabled": "yes",
+        "lifecycle_source": "lab scenario ground truth (emulated)",
+        "firmware_support": "end_of_life"
+      },
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "lab-gateway-01"
+          }
+        }
+      ],
+      "services": [
+        {
+          "port": 23,
+          "name": "telnet"
+        },
+        {
+          "port": 21,
+          "name": "ftp"
+        },
+        {
+          "port": 9100,
+          "name": "jetdirect"
+        },
+        {
+          "port": 8291,
+          "name": "winbox"
+        }
+      ]
+    }
+  }
+]

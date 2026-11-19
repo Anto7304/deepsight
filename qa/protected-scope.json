@@ -1,0 +1,17 @@
+{
+  "app/security.py:hash_password": true,
+  "app/security.py:verify_password": true,
+  "app/security.py:make_token": true,
+  "app/security.py:current_user": true,
+  "app/security.py:require": true,
+  "app/api.py:login": true,
+  "app/api.py:me": true,
+  "app/api.py:roles": true,
+  "app/api.py:users": true,
+  "app/api.py:create_user": true,
+  "app/api.py:patch_user": true,
+  "app/main.py:ensure_admin": true,
+  "function loginView()": true,
+  "function logout()": true,
+  "async function boot()": true
+}

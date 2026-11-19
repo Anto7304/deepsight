@@ -1,0 +1,109 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.qa
+#1 transferring dockerfile: 896B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 0.0s
+
+#3 [context wheelcache] load .dockerignore
+#3 transferring wheelcache:
+#3 transferring wheelcache: 2B done
+#3 DONE 0.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 134B 0.0s done
+#4 DONE 0.1s
+
+#5 [stage-0 1/9] FROM docker.io/library/python:3.12-slim
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 12.41kB done
+#6 DONE 0.1s
+
+#7 [context wheelcache] load from client
+#7 ...
+
+#8 [stage-0 2/9] WORKDIR /srv
+#8 CACHED
+
+#9 [stage-0 3/9] RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*  && useradd -r -u 10001 asivm && mkdir /data && chown asivm /data
+#9 CACHED
+
+#7 [context wheelcache] load from client
+#7 ...
+
+#10 [stage-0 4/9] COPY requirements.txt constraints.txt ./
+#10 DONE 0.9s
+
+#7 [context wheelcache] load from client
+#7 transferring wheelcache: 84.04MB 1.7s done
+#7 DONE 2.0s
+
+#11 [stage-0 5/9] RUN --mount=from=wheelcache,target=/wheels pip install --no-index --find-links=/wheels -r requirements.txt
+#11 8.074 Looking in links: /wheels
+#11 8.091 Processing /wheels/fastapi-0.162.3-py3-none-any.whl (from -r requirements.txt (line 2))
+#11 8.119 Processing /wheels/uvicorn-0.53.0-py3-none-any.whl (from -r requirements.txt (line 3))
+#11 8.125 Processing /wheels/sqlalchemy-2.0.49-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r requirements.txt (line 4))
+#11 8.156 Processing /wheels/psycopg2_binary-2.9.11-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r requirements.txt (line 5))
+#11 8.176 Processing /wheels/pyjwt-2.12.1-py3-none-any.whl (from -r requirements.txt (line 6))
+#11 8.182 Processing /wheels/cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (from -r requirements.txt (line 7))
+#11 8.205 Processing /wheels/scikit_learn-1.7.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r requirements.txt (line 8))
+#11 8.257 Processing /wheels/numpy-2.2.6-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from -r requirements.txt (line 9))
+#11 8.334 Processing /wheels/networkx-3.6.1-py3-none-any.whl (from -r requirements.txt (line 10))
+#11 8.358 Processing /wheels/packaging-26.2-py3-none-any.whl (from -r requirements.txt (line 11))
+#11 8.362 Processing /wheels/httpx-0.28.1-py3-none-any.whl (from -r requirements.txt (line 12))
+#11 8.372 Processing /wheels/anthropic-2.8.0-py3-none-any.whl (from -r requirements.txt (line 13))
+#11 8.409 Processing /wheels/python_multipart-0.0.33-py3-none-any.whl (from -r requirements.txt (line 14))
+#11 8.413 Processing /wheels/starlette-1.10.0-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.418 Processing /wheels/pydantic-2.14.3-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.431 Processing /wheels/typing_extensions-4.16.0-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.434 Processing /wheels/typing_inspection-0.4.5-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.439 Processing /wheels/annotated_doc-0.0.6-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.445 Processing /wheels/opentelemetry_api-1.45.2-py3-none-any.whl (from fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.451 Processing /wheels/click-8.5.1-py3-none-any.whl (from uvicorn==0.53.0->-r requirements.txt (line 3))
+#11 8.456 Processing /wheels/h11-0.16.0-py3-none-any.whl (from uvicorn==0.53.0->-r requirements.txt (line 3))
+#11 8.461 Processing /wheels/greenlet-3.5.6-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (from sqlalchemy==2.0.49->-r requirements.txt (line 4))
+#11 8.473 Processing /wheels/cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from cryptography==50.0.2->-r requirements.txt (line 7))
+#11 8.481 Processing /wheels/scipy-1.18.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from scikit-learn==1.7.2->-r requirements.txt (line 8))
+#11 8.624 Processing /wheels/joblib-1.6.0-py3-none-any.whl (from scikit-learn==1.7.2->-r requirements.txt (line 8))
+#11 8.634 Processing /wheels/threadpoolctl-3.8.0-py3-none-any.whl (from scikit-learn==1.7.2->-r requirements.txt (line 8))
+#11 8.644 Processing /wheels/anyio-4.16.0-py3-none-any.whl (from httpx==0.28.1->-r requirements.txt (line 12))
+#11 8.649 Processing /wheels/certifi-2026.10.23-py3-none-any.whl (from httpx==0.28.1->-r requirements.txt (line 12))
+#11 8.654 Processing /wheels/httpcore-1.0.9-py3-none-any.whl (from httpx==0.28.1->-r requirements.txt (line 12))
+#11 8.660 Processing /wheels/idna-3.20-py3-none-any.whl (from httpx==0.28.1->-r requirements.txt (line 12))
+#11 8.671 Processing /wheels/docstring_parser-0.18.0-py3-none-any.whl (from anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.676 Processing /wheels/httpx2-2.16.0-py3-none-any.whl (from anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.683 Processing /wheels/jiter-0.19.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.692 Processing /wheels/sniffio-1.3.1-py3-none-any.whl (from anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.709 Processing /wheels/pycparser-3.12-py3-none-any.whl (from cffi>=2.0.0->cryptography==50.0.2->-r requirements.txt (line 7))
+#11 8.721 Processing /wheels/httpcore2-2.16.0-py3-none-any.whl (from httpx2<3,>=2.0.0->anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.730 Processing /wheels/truststore-0.10.5-py3-none-any.whl (from httpx2<3,>=2.0.0->anthropic==2.8.0->-r requirements.txt (line 13))
+#11 8.742 Processing /wheels/cloudpickle-3.1.2-py3-none-any.whl (from joblib>=1.2.0->scikit-learn==1.7.2->-r requirements.txt (line 8))
+#11 8.751 Processing /wheels/annotated_types-0.8.0-py3-none-any.whl (from pydantic>=2.9.0->fastapi==0.162.3->-r requirements.txt (line 2))
+#11 8.758 Processing /wheels/pydantic_core-2.50.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from pydantic>=2.9.0->fastapi==0.162.3->-r requirements.txt (line 2))
+#11 9.070 Installing collected packages: typing-extensions, truststore, threadpoolctl, sniffio, python-multipart, pyjwt, pycparser, psycopg2-binary, packaging, numpy, networkx, jiter, idna, h11, greenlet, docstring-parser, cloudpickle, click, certifi, annotated-types, annotated-doc, uvicorn, typing-inspection, sqlalchemy, scipy, pydantic-core, opentelemetry-api, joblib, httpcore2, httpcore, cffi, anyio, starlette, scikit-learn, pydantic, httpx2, httpx, cryptography, fastapi, anthropic
+#11 49.18 Successfully installed annotated-doc-0.0.6 annotated-types-0.8.0 anthropic-2.8.0 anyio-4.16.0 certifi-2026.10.23 cffi-2.1.1 click-8.5.1 cloudpickle-3.1.2 cryptography-50.0.2 docstring-parser-0.18.0 fastapi-0.162.3 greenlet-3.5.6 h11-0.16.0 httpcore-1.0.9 httpcore2-2.16.0 httpx-0.28.1 httpx2-2.16.0 idna-3.20 jiter-0.19.0 joblib-1.6.0 networkx-3.6.1 numpy-2.2.6 opentelemetry-api-1.45.2 packaging-26.2 psycopg2-binary-2.9.11 pycparser-3.12 pydantic-2.14.3 pydantic-core-2.50.4 pyjwt-2.12.1 python-multipart-0.0.33 scikit-learn-1.7.2 scipy-1.18.1 sniffio-1.3.1 sqlalchemy-2.0.49 starlette-1.10.0 threadpoolctl-3.8.0 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.5 uvicorn-0.53.0
+#11 49.18 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 DONE 51.2s
+
+#12 [stage-0 6/9] COPY app ./app
+#12 DONE 0.4s
+
+#13 [stage-0 7/9] COPY eval ./eval
+#13 DONE 0.3s
+
+#14 [stage-0 8/9] COPY scripts ./scripts
+#14 DONE 0.2s
+
+#15 [stage-0 9/9] COPY lab ./lab
+#15 DONE 0.2s
+
+#16 exporting to image
+#16 exporting layers
+#16 exporting layers 11.9s done
+#16 writing image sha256:09157c21b52a9b9860748445bc7aa2ec3a09e022c1eb41555b83a8ab71fe78d7 0.0s done
+#16 naming to docker.io/library/deepsight:1.1.0 0.0s done
+#16 DONE 12.0s

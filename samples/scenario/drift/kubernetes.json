@@ -1,0 +1,132 @@
+{
+  "items": [
+    {
+      "kind": "Node",
+      "metadata": {
+        "name": "k8s-node-01"
+      },
+      "status": {
+        "addresses": [
+          {
+            "type": "Hostname",
+            "address": "k8s-node-01"
+          },
+          {
+            "type": "InternalIP",
+            "address": "10.30.0.11"
+          }
+        ],
+        "nodeInfo": {
+          "systemUUID": "ec2c0000-0000-4000-8000-000000000001",
+          "osImage": "Ubuntu 22.04.4 LTS",
+          "kubeletVersion": "v1.29.4",
+          "kernelVersion": "5.15.0",
+          "containerRuntimeVersion": "containerd://1.7.13"
+        }
+      }
+    },
+    {
+      "kind": "Node",
+      "metadata": {
+        "name": "k8s-node-02"
+      },
+      "status": {
+        "addresses": [
+          {
+            "type": "Hostname",
+            "address": "k8s-node-02"
+          },
+          {
+            "type": "InternalIP",
+            "address": "10.30.0.12"
+          }
+        ],
+        "nodeInfo": {
+          "systemUUID": "ec2c0000-0000-4000-8000-000000000002",
+          "osImage": "Ubuntu 22.04.4 LTS",
+          "kubeletVersion": "v1.29.4",
+          "kernelVersion": "5.15.0",
+          "containerRuntimeVersion": "containerd://1.7.13"
+        }
+      }
+    },
+    {
+      "kind": "Pod",
+      "metadata": {
+        "name": "payments-api-7d9c5b6f4-x2k8p",
+        "namespace": "prod",
+        "uid": "uid-x2k8p"
+      },
+      "spec": {
+        "nodeName": "k8s-node-01",
+        "containers": [
+          {
+            "image": "registry.corp.example.com/payments-api:2.14.1",
+            "ports": [
+              {
+                "containerPort": 8443,
+                "protocol": "TCP"
+              }
+            ]
+          }
+        ]
+      },
+      "status": {
+        "podIP": "10.244.1.17",
+        "phase": "Running"
+      }
+    },
+    {
+      "kind": "Pod",
+      "metadata": {
+        "name": "orders-web-5f6b7c8d9-q7m2z",
+        "namespace": "prod",
+        "uid": "uid-q7m2z"
+      },
+      "spec": {
+        "nodeName": "k8s-node-02",
+        "containers": [
+          {
+            "image": "registry.corp.example.com/orders-web:1.9.0",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ]
+          }
+        ]
+      },
+      "status": {
+        "podIP": "10.244.2.23",
+        "phase": "Running"
+      }
+    },
+    {
+      "kind": "Pod",
+      "metadata": {
+        "name": "redis-cache-0",
+        "namespace": "prod",
+        "uid": "uid-che-0"
+      },
+      "spec": {
+        "nodeName": "k8s-node-01",
+        "containers": [
+          {
+            "image": "registry.corp.example.com/redis:7.2.4",
+            "ports": [
+              {
+                "containerPort": 6379,
+                "protocol": "TCP"
+              }
+            ]
+          }
+        ]
+      },
+      "status": {
+        "podIP": "10.244.1.30",
+        "phase": "Running"
+      }
+    }
+  ]
+}

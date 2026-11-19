@@ -1,0 +1,56 @@
+[
+  {
+    "category": "perimeter_policy",
+    "identifiers": {
+      "hostname": [
+        "web-proxy-01"
+      ],
+      "ip": [
+        "10.10.0.5"
+      ]
+    },
+    "attributes": {
+      "services": [
+        {
+          "port": 80,
+          "proto": "tcp",
+          "exposure": "external"
+        },
+        {
+          "port": 443,
+          "proto": "tcp",
+          "exposure": "external"
+        }
+      ]
+    },
+    "raw_ref": "fw:web-proxy-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "perimeter_policy",
+    "identifiers": {
+      "hostname": [
+        "mail-01"
+      ],
+      "ip": [
+        "10.10.0.25"
+      ]
+    },
+    "attributes": {
+      "services": [
+        {
+          "port": 25,
+          "proto": "tcp",
+          "exposure": "external"
+        },
+        {
+          "port": 993,
+          "proto": "tcp",
+          "exposure": "external"
+        }
+      ]
+    },
+    "raw_ref": "fw:mail-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  }
+]

@@ -1,0 +1,6 @@
+ip,hostname,cve,port,cvss,evidence
+10.10.6.12,intranet-web-02,CVE-2021-41773,80,7.5,authenticated scan
+172.31.10.9,orders-worker-aws-02,CVE-2021-44228,8443,10.0,authenticated scan
+10.10.8.42,camera-iot-03,CVE-2021-36260,80,9.8,authenticated scan
+10.10.1.45,app-server-01,CVE-2020-1938,8009,9.8,authenticated scan
+10.10.3.15,files-01,CVE-2017-0144,445,8.1,authenticated scan

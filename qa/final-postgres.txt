@@ -1,0 +1,5 @@
+# 2026-11-15T13:45:06Z  PostgreSQL 16.15  (local disposable instance, freshly created empty database; not the Docker image)
+$ ASIVM_TEST_DATABASE_URL=postgresql+psycopg2://…/dstest python -m pytest tests -q
+................................................................         [100%]
+64 passed in 71.40s (0:01:11)
+real	1m13.427s

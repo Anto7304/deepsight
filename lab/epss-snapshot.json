@@ -1,0 +1,11 @@
+{
+  "source": "https://api.first.org/data/v1/epss?cve=CVE-2021-44228",
+  "retrieved_at": "2026-11-19",
+  "records": [
+    {
+      "cve": "CVE-2021-44228",
+      "epss": 0.99999,
+      "date": "2026-11-19"
+    }
+  ]
+}

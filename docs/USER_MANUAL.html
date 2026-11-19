@@ -1,0 +1,519 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEEPSIGHT User manual</title><style>body{margin:0;background:#f4f7fa;color:#18232e;font:16px/1.65 system-ui,Segoe UI,sans-serif}main{max-width:1080px;margin:auto;padding:38px 28px 80px;background:#fff}h1{font-size:34px;line-height:1.25;color:#123b49}h2{margin-top:44px;border-bottom:2px solid #d9e9ed;padding-bottom:9px;color:#123b49}h3{margin-top:28px}a{color:#076b84}code{background:#eff4f6;padding:2px 5px;border-radius:4px;font-size:.9em}pre{padding:18px;background:#172b37;color:#e6f2f4;overflow:auto;border-radius:7px;line-height:1.5}pre code{background:none;padding:0}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;font-size:14px;margin:22px 0}th{background:#e9f1f4;text-align:left}td,th{border:1px solid #ccdade;padding:11px 13px;vertical-align:top}li{margin:6px 0}blockquote{border-left:4px solid #0b7e91;margin:20px 0;padding:2px 20px;background:#edf7f8}nav{background:#edf4f6;border:1px solid #d3e1e5;border-radius:8px;padding:18px 24px}nav ul{margin:0;padding-left:20px}small{color:#5b6e7b}@media print{body,main{background:white}main{padding:0;font-size:11pt;max-width:none}h2,h3{break-after:avoid}pre,table{break-inside:avoid}a{color:inherit;text-decoration:none}nav{display:none}}</style></head><body><main><h1>DEEPSIGHT user manual</h1><small>Updated 19 November 2026 · Browser readable and printable</small><nav aria-label="Contents"><b>Contents</b><ul><li><a href="#1-start-and-sign-in">1. Start and sign in</a></li><li><a href="#2-a-simple-daily-routine">2. A simple daily routine</a></li><li><a href="#3-understand-source-labels-before-acting">3. Understand source labels before acting</a></li><li><a href="#4-overview-decide-where-to-look">4. Overview: decide where to look</a></li><li><a href="#5-integrations-get-data-into-the-platform">5. Integrations: get data into the platform</a></li><li><a href="#6-assets-understand-one-device-or-resource">6. Assets: understand one device or resource</a></li><li><a href="#7-findings-and-work-queue-organize-remediation">7. Findings and Work queue: organize remediation</a></li><li><a href="#8-infrastructure-follow-dependencies-and-changes">8. Infrastructure: follow dependencies and changes</a></li><li><a href="#9-intelligence-review-unusual-activity-and-identity">9. Intelligence: review unusual activity and identity</a></li><li><a href="#10-investigations-keep-a-case-record">10. Investigations: keep a case record</a></li><li><a href="#11-assistant-ask-for-evidence">11. Assistant: ask for evidence</a></li><li><a href="#12-reports-and-global-search">12. Reports and Global search</a></li><li><a href="#13-administration-and-advanced-operations">13. Administration and advanced operations</a></li><li><a href="#14-when-something-looks-blank-or-does-not-work">14. When something looks blank or does not work</a></li></ul></nav>
+<p>Use DEEPSIGHT to answer four practical questions: <strong>What assets do I have? What changed? What should I investigate or fix first? What evidence shows the work is complete?</strong></p>
+<p>The platform starts with an empty inventory. You add evidence through a scan, a file import, or a collector. DEEPSIGHT then proposes or confirms asset identities, records their services and history, matches findings, and calculates risk. Probable identity matches stay separate until an analyst confirms them. It does not patch devices, execute the assistant's advice, or create tickets simply because you enter a ticket link.</p>
+<p>For a first session, follow the separate <a href="OPERATOR_WALKTHROUGH.html">Operator walkthrough</a> (<a href="OPERATOR_WALKTHROUGH.html">Markdown source</a>). A printable <a href="USER_MANUAL.html">HTML copy of this manual</a> is included with the release. The platform uses its normal operational screens for scanning, importing and analysis.</p>
+<h2 id="1-start-and-sign-in">1. Start and sign in</h2>
+<p>Extract the application archive, open a terminal in the application folder, and run:</p>
+<pre><code class="language-bash">cp .env.example .env
+docker compose up --build -d
+docker compose logs app
+</code></pre>
+<p>Open <code>http://localhost:8000</code>, unless you changed <code>ASIVM_PORT</code>. The first start prints the generated administrator password if <code>ASIVM_ADMIN_PASSWORD</code> is empty. Set your own password in the environment before the first start if preferred. Sign in as the configured administrator, normally <code>admin</code>.</p>
+<p>New installations have no collected infrastructure evidence. Existing database contents remain when you restart. Scan or import through <strong>Integrations</strong> to build the inventory. For the isolated working lab, use <code>python3 scripts/start_lab.py</code> and follow the separate operator walkthrough; this also starts the normal application, without collecting data automatically.</p>
+<h3>Your account determines which buttons work</h3>
+<table>
+<thead>
+<tr>
+<th>Account role</th>
+<th>What you can do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Readonly</td>
+<td>Browse assets, findings, graph, intelligence and investigations; search; ask the assistant; download reports; save your own queue filters.</td>
+</tr>
+<tr>
+<td>Manager</td>
+<td>Readonly actions, view system status, and validate investigation conclusions.</td>
+</tr>
+<tr>
+<td>Analyst</td>
+<td>Readonly actions, change asset criticality, review identity/anomalies, triage findings, verify fixes, and create/update investigations and notes.</td>
+</tr>
+<tr>
+<td>Administrator</td>
+<td>Analyst actions plus integrations, collections, imports, users, audit, model retraining and system operations.</td>
+</tr>
+</tbody>
+</table>
+<p>Sign out from the sidebar when finished. If the session expires, sign in again. A permission error generally means the action needs a different role; creating an integration or importing a file needs an administrator.</p>
+<h2 id="2-a-simple-daily-routine">2. A simple daily routine</h2>
+<ol>
+<li><strong>Integrations:</strong> collect or import new evidence. Check that the run succeeded and processed records.</li>
+<li><strong>Overview:</strong> look for new assets, external exposure, critical/high risks, and anomalies awaiting review.</li>
+<li><strong>Work queue:</strong> choose the next finding, read why it is prioritized, and assign an owner and status.</li>
+<li><strong>Finding or asset:</strong> read the source evidence and suggested action before changing anything outside DEEPSIGHT.</li>
+<li><strong>Investigations:</strong> record what you checked and your conclusion. Use the assistant to retrieve supporting evidence.</li>
+<li>After an actual fix, import a newer assessment that explicitly covers the finding. <strong>Verify and close</strong> records the evidence that the finding is absent.</li>
+<li><strong>Reports:</strong> download a summary to share or retain.</li>
+</ol>
+<h2 id="3-understand-source-labels-before-acting">3. Understand source labels before acting</h2>
+<table>
+<thead>
+<tr>
+<th>Label or term</th>
+<th>Meaning and what to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asset</td>
+<td>A device, server, cloud resource, virtual machine, container or other thing that a source observed.</td>
+</tr>
+<tr>
+<td>Observation</td>
+<td>One source's record about an asset at a particular time. Open it to see the normalized record and original source data.</td>
+</tr>
+<tr>
+<td>Finding</td>
+<td>A CVE match or configuration concern attached to an asset. A finding can require investigation without proving exploitation.</td>
+</tr>
+<tr>
+<td>Observed</td>
+<td>The source directly reported the information, such as a scanner reporting a CVE. Still check source quality and age.</td>
+</tr>
+<tr>
+<td>Inferred</td>
+<td>DEEPSIGHT derived the result, such as matching a service version against a catalog or identifying an unsafe IoT configuration. Verify the inference.</td>
+</tr>
+<tr>
+<td>ML-predicted / predicted</td>
+<td>A model detected an unusual pattern or supplied a prediction. Review the evidence; it is not confirmation of an attack.</td>
+</tr>
+<tr>
+<td>Analyst-validated</td>
+<td>A user with validation rights recorded a review decision. This is a human judgment, not a new scan.</td>
+</tr>
+<tr>
+<td>CVSS</td>
+<td>The published severity score for a vulnerability, usually 0–10. It does not consider your full environment. Configuration findings can have no CVSS.</td>
+</tr>
+<tr>
+<td>Contextual risk</td>
+<td>DEEPSIGHT's weighted 0–100 priority score. It considers severity, exposure, business criticality, known exploitation, dependencies and evidence. It is not a probability of compromise.</td>
+</tr>
+<tr>
+<td>Confidence</td>
+<td>Confidence in the identity or finding evidence, not a guarantee that the device is secure or compromised.</td>
+</tr>
+<tr>
+<td>KEV</td>
+<td>The CVE is in CISA's Known Exploited Vulnerabilities catalog. The bundled snapshot is historical; use live synchronization for current information.</td>
+</tr>
+<tr>
+<td>External</td>
+<td>Evidence indicates internet exposure. A private IP alone does not prove a service is internal; perimeter or cloud evidence can identify forwarding/exposure.</td>
+</tr>
+<tr>
+<td>Criticality</td>
+<td>Your business importance for an asset, from 1 to 5. Raising it can raise contextual risk.</td>
+</tr>
+<tr>
+<td>Not recently assessed</td>
+<td>No recent successful assessment with explicit scope is available. It does not mean “no vulnerabilities.”</td>
+</tr>
+<tr>
+<td>No vulnerability detected</td>
+<td>A recent successful assessment reported no finding within its stated scope. It does not establish that every possible vulnerability was tested.</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>verify</code> risk level means the evidence needs verification. Times shown in the interface are UTC. Empty optional fields mean the source did not supply that information. For example, a TCP scan cannot supply a business owner, and an IoT policy finding may have no published CVSS or ATT&amp;CK technique.</p>
+<h2 id="4-overview-decide-where-to-look">4. Overview: decide where to look</h2>
+<p>Open <strong>Overview</strong> after an import or collection. Use <strong>Refresh</strong> to fetch current results.</p>
+<p>The main cards show total assets, external assets, open findings, critical/high contextual findings, anomalies awaiting review, and open investigations. Click a card to open the corresponding records. “Published vs contextual” compares vendor CVSS severity with DEEPSIGHT's environment-specific priorities. Trends show changes and open findings across 14 days when history exists; a new deployment cannot show a meaningful past trend until you import historical evidence or collect over time.</p>
+<p>The freshness line shows assets lacking recent assessment and assets with conflicting source evidence. Investigate conflicts on the asset's detail page. “Top contextual risks” is your shortlist; it is not a list of confirmed attacks.</p>
+<p>Stopping or restarting the application preserves stored evidence. Use a separate deployment and database when you need an empty inventory for an operator rehearsal.</p>
+<h2 id="5-integrations-get-data-into-the-platform">5. Integrations: get data into the platform</h2>
+<p>An integration defines a source and how DEEPSIGHT receives its data. Some integrations collect from a target. Others only import files exported by another tool.</p>
+<h3>Import a file</h3>
+<ol>
+<li>Open <strong>Integrations → Add integration</strong>.</li>
+<li>Give the source a meaningful name, such as <code>Weekly Nmap</code> or <code>Server inventory</code>.</li>
+<li>Choose the connector matching the file format in the table below. Use <strong>Insert template</strong> where configuration is needed. Leave a file-only source's schedule at zero.</li>
+<li>Save the integration. Choose <strong>Test</strong>; an import connector's test validates setup and does not parse a file or scan a device.</li>
+<li>Choose <strong>Import file</strong>, select the source, choose your file, and click <strong>Upload &amp; import</strong>.</li>
+<li>Read received, processed, duplicate, rejected and failed counts. Open <strong>Run history</strong> to see details. Then open <strong>Assets</strong> or <strong>Findings</strong>.</li>
+</ol>
+<p>The import dialog accepts text-based formats. The import payload limit is 20,000,000 characters and filenames are limited to 200 characters. Split larger exports. Merely selecting a file does not import it.</p>
+<table>
+<thead>
+<tr>
+<th>Connector</th>
+<th>File to supply</th>
+<th>What it adds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host inventory (CSV)</td>
+<td>CSV with identifiers such as <code>ip</code>, <code>hostname</code>, <code>mac</code>, <code>cloud_id</code>, <code>serial</code>; optional <code>os</code>, <code>owner</code>, <code>criticality</code>, <code>type</code>, <code>tags</code>, <code>ports</code>, <code>last_seen</code>. See <code>samples/cmdb.csv</code>.</td>
+<td>Asset identity, owner/business context and optional ports. Separate tags with <code>;</code> or `</td>
+</tr>
+<tr>
+<td>Nmap scan (XML, -oX)</td>
+<td>XML created with Nmap's <code>-oX</code> export. See <code>samples/nmap-scan.xml</code>.</td>
+<td>Host identifiers, reported OS, open services, products and versions. It imports an existing scan; DEEPSIGHT does not run Nmap.</td>
+</tr>
+<tr>
+<td>Vulnerability scan results (CSV/JSON)</td>
+<td>CSV/JSON with <code>host</code> or <code>ip</code>, optional <code>hostname</code>, and <code>cve</code>, <code>port</code>, <code>cvss</code>. See <code>samples/vuln-scan.csv</code>.</td>
+<td>Scanner-reported CVEs as observed findings. A missing CVE row in a CSV does not prove a complete clean assessment.</td>
+</tr>
+<tr>
+<td>Generic observations (JSON)</td>
+<td>A list of objects containing <code>identifiers</code>, <code>attributes</code>, optional <code>observed_at</code>, <code>category</code> and <code>raw_ref</code>. See the prepared <code>lab-inventory.json</code> and <code>baseline-history.json</code> files described in the operator walkthrough.</td>
+<td>Rich inventory, services, software, IoT metadata, relationships, historical observations and explicitly scoped assessments.</td>
+</tr>
+<tr>
+<td>AWS EC2 inventory (JSON)</td>
+<td><code>aws ec2 describe-instances</code> output. Optional merged <code>SecurityGroups</code> data. See <code>samples/aws-describe-instances.json</code>.</td>
+<td>EC2 identifiers, network information, tags and configuration; security-group definitions can add exposure evidence.</td>
+</tr>
+<tr>
+<td>Azure VM inventory (JSON)</td>
+<td><code>az vm list -d -o json</code>.</td>
+<td>VM/cloud identifiers, OS, location and configuration.</td>
+</tr>
+<tr>
+<td>Oracle Cloud instances (JSON)</td>
+<td><code>oci compute instance list</code> output.</td>
+<td>Instance/cloud identifiers, shape and state. Network addresses are only present if your source provides them through a supported observation format.</td>
+</tr>
+<tr>
+<td>Kubernetes nodes/pods (JSON)</td>
+<td><code>kubectl get nodes,pods -A -o json</code>; set <code>cluster_name</code> in configuration. See <code>samples/kubectl-nodes-pods.json</code>.</td>
+<td>Cluster, nodes, containers, software/services and relationships such as “runs on.”</td>
+</tr>
+<tr>
+<td>Trivy JSON</td>
+<td>Trivy JSON export; set <code>assessment_codes</code> when a clean scan must explicitly cover particular prior findings.</td>
+<td>Observed package findings and successful assessment scope.</td>
+</tr>
+<tr>
+<td>Grype JSON</td>
+<td>Grype JSON export; use <code>assessment_codes</code> for additional explicitly assessed finding codes.</td>
+<td>Observed package findings and successful assessment scope.</td>
+</tr>
+</tbody>
+</table>
+<p>Do not select a JSON connector merely because the extension is <code>.json</code>: AWS, Kubernetes, scanner and generic observation structures are different. Use the matching connector.</p>
+<h3>Run live TCP discovery</h3>
+<ol>
+<li>Open <strong>Integrations → Configure discovery</strong>, or add <strong>TCP connect discovery (authorized targets)</strong>.</li>
+<li>Enter only IP addresses or CIDR ranges you are authorized to scan.</li>
+<li>Confirm <strong>I am authorised to scan these targets</strong>.</li>
+<li>Enter ports, timeout and maximum hosts. The <strong>IoT ports</strong> button adds common embedded-device ports. You can supply static hostnames and an asset type in Advanced settings.</li>
+<li>Save; run <strong>Test</strong>, then <strong>Collect</strong> or <strong>Collect now</strong>. Wait for the run result.</li>
+</ol>
+<p><strong>Test</strong> checks target configuration and the deployment's allowed ranges; it does not establish that ports are reachable. <strong>Collect</strong> performs TCP connections and reads limited banners. It is not a full vulnerability scanner, authenticated audit, UDP discovery or firmware detector. Firmware/vendor/owner information comes from an inventory import or another source.</p>
+<p>The server setting <code>ASIVM_TCP_ALLOWED_CIDRS</code> controls permitted ranges. Discovery can be disabled with <code>ASIVM_ALLOW_TCP_DISCOVERY=false</code>. At most 4,096 hosts and the first 200 configured ports are processed. For the isolated lab, use the four addresses and configuration printed by <code>scripts/start_lab.py</code>; Linux local mode uses <code>127.0.0.2</code>–<code>127.0.0.5</code>. The launcher selects and saves a free private Docker subnet to avoid another deployment.</p>
+<h3>Collect an HTTP API and use a schedule</h3>
+<p>Add <strong>HTTP API collector (JSON)</strong>. Its configuration needs a reachable <code>url</code>, a supported <code>mapper</code> (<code>generic_json</code>, <code>aws_ec2</code>, <code>azure_vm</code>, <code>oci_instances</code>, or <code>k8s_json</code>), a timeout and TLS verification setting. If required, enter authorization headers in <strong>Secrets</strong>; secrets are encrypted and never shown again. <strong>Test</strong> checks the endpoint returns JSON, then <strong>Collect</strong> maps and ingests it.</p>
+<p>Set <strong>Collection schedule (minutes)</strong> above zero for HTTP or TCP collectors. Zero means manual collection. The scheduler and background worker must be enabled. File import connectors cannot run on a schedule. Loopback, link-local and metadata HTTP destinations are blocked; a private Docker network address is appropriate for a local lab collector.</p>
+<h3>Understand run results</h3>
+<table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Meaning</th>
+<th>Next step</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Success, processed records</td>
+<td>Evidence was ingested.</td>
+<td>Inspect assets/findings and check timestamps.</td>
+</tr>
+<tr>
+<td>Duplicate records</td>
+<td>The same observation was already ingested.</td>
+<td>Usually expected on repeated imports. Use genuinely newer evidence to create change history.</td>
+</tr>
+<tr>
+<td>Partial</td>
+<td>Some records were rejected or failed, or none were usable.</td>
+<td>Read run history; fix source data before treating the run as complete.</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>The collection/import could not complete.</td>
+<td>Read the error, check format, credentials, targets and server/network access; retry after fixing it.</td>
+</tr>
+<tr>
+<td>Running</td>
+<td>Work is in progress.</td>
+<td>Wait for completion. If stuck, inspect Administration system status and background jobs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-assets-understand-one-device-or-resource">6. Assets: understand one device or resource</h2>
+<p>Use the filters to find an asset by name, IP, MAC, owner, type, status, exposure, risk or identity. Sorting applies to the currently displayed page. Click a row to open its details.</p>
+<table>
+<thead>
+<tr>
+<th>Asset tab</th>
+<th>What to look for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overview</td>
+<td>Owner, OS, identifiers, identity confidence, risk factors and impact on connected assets. Change <strong>Criticality</strong> if your business importance differs from the imported value.</td>
+</tr>
+<tr>
+<td>Identifiers</td>
+<td>IPs, MACs, hostnames, cloud/device IDs, source and dates. Identity decisions help explain whether sources refer to the same asset.</td>
+</tr>
+<tr>
+<td>Observations</td>
+<td>Which sources reported it, when, quality flags and matching outcome. Click an observation to inspect normalized and raw data.</td>
+</tr>
+<tr>
+<td>Services</td>
+<td>Active and closed ports, products/versions and exposure evidence. Software appears beneath services. A banner is evidence of what was reported, not a complete installed-software audit.</td>
+</tr>
+<tr>
+<td>Vulnerabilities</td>
+<td>The asset's matched CVEs and configuration findings. Open a finding to review its basis.</td>
+</tr>
+<tr>
+<td>Relationships</td>
+<td>Which assets host it, depend on it, belong to it or connect to it; direction, evidence basis and confidence.</td>
+</tr>
+<tr>
+<td>History</td>
+<td>Changes between observations: services, software, attributes, configuration or lifecycle.</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>Past contextual scores, confidence and explanatory summary.</td>
+</tr>
+</tbody>
+</table>
+<p>The freshness panel lists recent/stale sources, expected sources that are missing when configured, and conflicting evidence. A vulnerability assessment must be recent, successful and explicitly scoped to support a “no vulnerability detected” state. Simple inventory, TCP/Nmap discovery or a scanner CSV without complete scope cannot establish that state.</p>
+<p>For <strong>IoT devices</strong>, import both discovery evidence and inventory metadata. DEEPSIGHT can create <code>DS-IOT-*</code> configuration findings for cleartext management/services, exposed management, end-of-life firmware and related policies. The isolated lab uses emulators plus a Mosquitto broker; it does not exploit devices or test real credentials.</p>
+<h2 id="7-findings-and-work-queue-organize-remediation">7. Findings and Work queue: organize remediation</h2>
+<p><strong>Findings</strong> is the list of current findings; its visible search, contextual-risk and KEV filters help narrow the list. Additional asset/CVE/workflow filtering is available through the API. <strong>Work queue</strong> is ordered for action, with reasons such as active work, overdue due date, KEV and contextual priority. Its ordering does not prove a finding is exploitable.</p>
+<p>In the queue, set <code>q</code>, <code>owner</code> or <code>state</code>, click <strong>Apply</strong>, and use <strong>Save filter</strong> to keep the current query under your own account. For bulk updates, select finding checkboxes, enter an owner, choose a state, then <strong>Apply to selected findings</strong>.</p>
+<p>Open a finding to see the published data, affected asset/service, contextual factors, suggested actions, evidence and score history. Configuration findings have policy explanations and may have no CVSS. Suggested actions are advice; DEEPSIGHT does not apply them to your system.</p>
+<h3>Save a workflow</h3>
+<p>Enter an owner, due date, remediation guidance and optional HTTP(S) ticket link, choose the status, then <strong>Save workflow</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Use it when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new</code></td>
+<td>Work has not been reviewed.</td>
+</tr>
+<tr>
+<td><code>confirmed</code></td>
+<td>You reviewed the evidence and believe the finding is valid.</td>
+</tr>
+<tr>
+<td><code>in_progress</code></td>
+<td>Someone is actively working on it.</td>
+</tr>
+<tr>
+<td><code>pending_verification</code></td>
+<td>The fix is applied and a newer assessment is needed.</td>
+</tr>
+<tr>
+<td><code>accepted_risk</code></td>
+<td>A documented exception is in force. Supply its own reason, approver and future expiry.</td>
+</tr>
+<tr>
+<td><code>false_positive</code></td>
+<td>You documented why the finding is incorrect. Supply its own reason, approver and future expiry.</td>
+</tr>
+<tr>
+<td><code>resolved</code></td>
+<td>A successful newer scoped assessment verified absence of the finding. You cannot select this as a manual workflow shortcut.</td>
+</tr>
+</tbody>
+</table>
+<p>Use dates in ISO form, for example <code>2026-12-01</code>, or a timestamp such as <code>2026-12-01T12:00:00Z</code>. The approver field records your assertion; it does not send an approval request. Expired exceptions return to active work and do not count as verified fixes. A ticket link records a reference and does not create a ticket.</p>
+<p><strong>What if this finding is fixed?</strong> estimates the current weighted risk score after removing this finding while holding context unchanged. A small or zero reduction can be correct when another finding dominates risk. It does not predict reduced business loss or incidents.</p>
+<h3>Verify and close a finding</h3>
+<ol>
+<li>Apply and assess the actual fix outside DEEPSIGHT. The separate operator walkthrough provides a controlled assessment fixture for rehearsing this process.</li>
+<li>Import a <strong>newer</strong>, recent, successful <strong>complete assessment of the same asset</strong>. It must explicitly include the finding code in its assessed scope and omit the finding from reported results.</li>
+<li>Find that record's observation ID in <strong>Assets → asset → Observations</strong>. Open the observation and check its source, assessment scope and time before using its ID.</li>
+<li>Open the finding, enter the ID in <strong>Verification observation ID</strong>, and click <strong>Verify and close</strong>.</li>
+<li>Confirm the finding is resolved and the evidence contains the verification record.</li>
+</ol>
+<p>A service disappearing from a TCP scan or a CVE missing from a CSV is insufficient. Verification fails if the record is too old, not newer than the finding's last sighting, belongs to a different asset, lacks complete scope, or still reports the finding. If a later valid observation reports the finding again, it can reopen.</p>
+<h2 id="8-infrastructure-follow-dependencies-and-changes">8. Infrastructure: follow dependencies and changes</h2>
+<p>Open <strong>Infrastructure</strong> after importing relationships or Kubernetes data. The graph shows connected assets; isolated assets without recorded relationships may not appear. Select a node to inspect related assets. Search a name, toggle <strong>Edge labels</strong> or <strong>Inferred links</strong>, and use graph controls to adjust the view. Follow an asset link to open its details.</p>
+<p>Read the basis and confidence on each relationship. A recorded/inferred connection is not proof that an attacker can traverse it. The recent-changes list helps explain the graph's evolution. To populate it, collect/import a second observation that changes a service, version, address, configuration or relationship. Use the same source for consecutive snapshots so their differences can be compared. HTTP collectors provide another way to obtain these observations. Outbound webhook integrations can deliver newly eligible findings to your receiver; inspect delivery status through the API.</p>
+<h2 id="9-intelligence-review-unusual-activity-and-identity">9. Intelligence: review unusual activity and identity</h2>
+<h3>Anomalies</h3>
+<p>The model compares changes with learned patterns. Open <strong>Intelligence → anomalies</strong>, read the summary/contributors, follow the asset and compare observations. The score is shown beside the decision threshold.</p>
+<p>Use <strong>True positive</strong> when the unusual change merits the alert, <strong>False positive</strong> when the alert was inappropriate, or <strong>Reviewed</strong> when you have looked at it without giving that label. A true-positive anomaly can be a legitimate but unusual change; this decision alone does not prove malicious activity. Reviews become recorded analyst feedback.</p>
+<p>To trigger useful anomalies, first collect a baseline/history, then change the environment and collect again. Importing historical baseline observations before a changed snapshot lets you rehearse this through the ordinary import controls. With no baseline or no unusual changes, no anomalies may be the correct result.</p>
+<h3>Identity</h3>
+<p>Sources may describe the same device differently. Open <strong>Intelligence → identity</strong> and compare the observation's asset with the proposed candidate, the match confidence and the identifier evidence.</p>
+<ul>
+<li><strong>Same asset (merge):</strong> combine the records when you have evidence they are the same device.</li>
+<li><strong>Separate:</strong> reject the proposed match when they represent different devices.</li>
+<li><strong>Revert decision:</strong> undo an analyst decision using its saved snapshot when you need to correct it.</li>
+</ul>
+<p>Do not merge based on IP alone when addresses may have been reused. A confirmed identity is distinct from a confirmed security finding. An inventory record with a MAC address may require review before combining with an earlier IP/hostname-only scan record. Confirm a supported pair to obtain one combined profile; unresolved pairs can temporarily increase the asset count. Already confident matches can be confirmed automatically. Merges carry missing inventory profile fields into the combined asset. Reverting preserves later profile edits.</p>
+<h3>Models</h3>
+<p><strong>Intelligence → models</strong> explains the active identity, anomaly and contextual-risk models, their training data, versions, metrics and inference/error counts. Contextual risk is a rule-weighted heuristic. Model measurements on synthetic or analyst-labeled data describe those data; they are not a guarantee of field accuracy.</p>
+<p>An administrator can choose <strong>Retrain anomaly model on platform data</strong>. The active version changes when retraining succeeds. Collect or import enough baseline history first so collected platform vectors participate; retraining on an empty database only uses bootstrap training data. Do not train only on one unusual event and assume the result is reliable.</p>
+<h3>Catalog</h3>
+<p><strong>Intelligence → catalog</strong> lists CVEs, CVSS, KEV, exploit information and affected findings. The bundled catalog is a snapshot. <strong>Sync CISA KEV</strong> needs internet access and the remote service to be available. Stored catalog evidence remains available without calling CISA. Administrators can also import NVD and EPSS information through the API, described below.</p>
+<h2 id="10-investigations-keep-a-case-record">10. Investigations: keep a case record</h2>
+<p>From an asset or finding, click <strong>Start investigation</strong>. The investigation includes its scope and an evidence timeline. Add an analyst note stating what you checked, the evidence IDs, who will act, and any limits.</p>
+<p>When ready, choose an outcome (<code>true_positive</code>, <code>false_positive</code>, <code>benign</code> or <code>unknown</code>), write a conclusion of at least three characters, and validate it. A permitted validator closes the investigation and records who/when. Closing an investigation does <strong>not</strong> verify and resolve its findings. Findings need their own newer assessment and <strong>Verify and close</strong>.</p>
+<p>An administrator/analyst can link asset, finding and anomaly IDs through the investigation API. Validating a linked, still-new anomaly as true/false positive records corresponding feedback. Merely starting from an asset does not automatically link every anomaly to the case.</p>
+<h2 id="11-assistant-ask-for-evidence">11. Assistant: ask for evidence</h2>
+<p>Open <strong>Assistant</strong> from the sidebar. When you are on an asset, finding or investigation, the assistant receives that page context. Try:</p>
+<ul>
+<li>“Why has the risk of app-server-01 increased?” after a changed observation has been collected or imported.</li>
+<li>“What is connected to ci-server-01?” after relationship evidence has been imported.</li>
+<li>“What changed in the last 24 hours?”</li>
+<li>“Which assets need attention?”</li>
+<li>On a finding: “Explain this finding and what I should check.”</li>
+</ul>
+<p>Follow the references in the answer to verify its evidence. The assistant only retrieves/explains platform data; it cannot scan, patch, merge identities or close work on your behalf. Questions about assets absent from the database correctly produce a missing-evidence answer.</p>
+<p>Without <code>ANTHROPIC_API_KEY</code>, the built-in <strong>evidence</strong> mode works locally with supported question types. Setting a valid key enables optional LLM mode, which requires internet/service access and still uses platform evidence. Leave the key unset for the reproducible offline walkthrough. Answers and chat history in the sidebar are not a substitute for saved investigation notes.</p>
+<h2 id="12-reports-and-global-search">12. Reports and Global search</h2>
+<p><strong>Reports</strong> provides Infrastructure inventory, Asset identity reconciliation, Vulnerability assessment, Contextual risk summary, Infrastructure changes, Anomaly investigation, Security posture overview and Investigation findings. Choose <strong>HTML</strong> to read/share a formatted report, <strong>CSV</strong> for a spreadsheet, or <strong>JSON</strong> for structured data. Each export states scope, sources and limitations; it is generated from current stored evidence.</p>
+<p>Collect inventory, change, identity and finding evidence, then create an investigation before exporting all report categories. An empty investigation report before you create a case is expected.</p>
+<p><strong>Global search</strong> searches asset names/identifiers, findings and investigation titles. Enter an existing asset name, CVE or investigation title, then follow the result. A search with no matching evidence should say no matches; it should not invent records.</p>
+<h2 id="13-administration-and-advanced-operations">13. Administration and advanced operations</h2>
+<h3>System, users and audit</h3>
+<p><strong>Administration → system</strong> shows API/database state, integrations, pipeline statistics and the scheduler heartbeat when your role permits it. <code>/api/health</code> also checks worker readiness. Collection starts asynchronous work; healthy worker and scheduler heartbeats are needed for scheduled operations. <strong>Lifecycle sweep</strong> updates old unseen assets according to the inactivity threshold; it does not rescan them.</p>
+<p>Administrators create users on <strong>Administration → users</strong>. Use a username of 3–64 allowed characters and a password of at least 12 characters. Choose the least powerful role that supports the person's work. User role/password/active-status changes are available through <code>PATCH /api/users/{id}</code>.</p>
+<p><strong>Administration → audit</strong> records actions such as sign-in, imports/collections, triage, identity decisions, investigation validation, users and reports. It starts with few rows on a new database and grows as you perform operational tasks.</p>
+<h3>API-only functions</h3>
+<p>Open <code>/api/docs</code> on your deployment for exact request schemas. For an authenticated API session, use <code>POST /api/auth/login</code>, then pass the returned token through <strong>Authorize</strong> as a Bearer token. Treat it like a password. These functions are useful to an administrator or developer; they are not all buttons in the main interface.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Trigger / evidence needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add/end an explicit relationship</td>
+<td><code>POST /api/relationships</code> with valid source/target asset IDs and a supported relationship type; <code>DELETE /api/relationships/{id}</code> ends it. Requires analyst/admin.</td>
+</tr>
+<tr>
+<td>Submit custom observations</td>
+<td><code>POST /api/observations</code> with a batch of valid identifiers/attributes. Requires analyst/admin. Use a file-based generic integration for the beginner workflow.</td>
+</tr>
+<tr>
+<td>Reassess/rematch</td>
+<td><code>POST /api/system/reassess</code>, <code>POST /api/intelligence/rematch</code>; use after context/catalog changes if needed. Requires admin. It recalculates from evidence; it does not scan.</td>
+</tr>
+<tr>
+<td>NVD CVE enrichment</td>
+<td><code>POST /api/intelligence/nvd/{cve}</code> needs network access. <code>POST /api/intelligence/nvd-import</code> accepts a valid NVD JSON response locally, then rematches findings. Requires admin.</td>
+</tr>
+<tr>
+<td>EPSS</td>
+<td><code>POST /api/intelligence/epss</code> with a list of <code>{cve, epss, date}</code> records, scores 0–1 and a valid date not in the future. Requires admin. It is a prediction from imported data, not exploitation confirmation.</td>
+</tr>
+<tr>
+<td>Assessment freshness threshold</td>
+<td><code>GET/PUT /api/settings/assessment-age</code>; supply <code>hours</code> for updates. Requires admin to change. It alters freshness interpretation, not observation timestamps.</td>
+</tr>
+<tr>
+<td>Jobs</td>
+<td><code>GET /api/jobs</code> after collection/maintenance; shows queued/running/completed/failed durable work and errors. Requires admin.</td>
+</tr>
+<tr>
+<td>Metrics</td>
+<td><code>GET /api/metrics</code> returns Prometheus text to any signed-in user. <code>/api/health</code> is the readiness check and returns 503 if degraded.</td>
+</tr>
+<tr>
+<td>Outbound notifications</td>
+<td>Add an <code>outbound_webhook</code> integration with your HTTP(S) receiver URL before importing a <strong>new critical or KEV finding</strong>. New eligible evidence queues a delivery; <code>POST /api/webhooks/dispatch</code> attempts pending deliveries and <code>GET /api/webhooks/deliveries</code> shows status. Requires admin. <strong>Test</strong> validates the destination URL and sends no event. Repeated evidence is deduplicated; failed deliveries retry with a bound. A real receiver or local lab endpoint must exist.</td>
+</tr>
+</tbody>
+</table>
+<p>Backup, restore and raw-data retention are maintenance tasks. <code>scripts/backup.py</code> provides backup/check/restore commands, and <code>ASIVM_RAW_RETENTION_DAYS</code> controls raw-payload archiving. Use a separate empty database for restore. A backup contains sensitive account and secret material and must be stored appropriately. Recent records do not need to be archived merely to exercise retention.</p>
+<h2 id="14-when-something-looks-blank-or-does-not-work">14. When something looks blank or does not work</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No assets</td>
+<td>Finish a scan/import, inspect run counts, then refresh. On first start this is intentional.</td>
+</tr>
+<tr>
+<td>Services but no owner/firmware</td>
+<td>Import inventory metadata; discovery cannot infer business ownership or authoritative firmware details.</td>
+</tr>
+<tr>
+<td>No findings</td>
+<td>The source may not report CVEs and the service/version may not match the stored catalog. Import scanner findings and/or enrich the catalog. No finding does not imply a clean assessment.</td>
+</tr>
+<tr>
+<td>No anomalies</td>
+<td>Import/collect baseline history, then changed evidence; inspect collected model vectors and thresholds. The operator walkthrough supplies baseline and changed snapshots for controlled rehearsal.</td>
+</tr>
+<tr>
+<td>No graph</td>
+<td>Import relationships/Kubernetes data with valid referenced identifiers. Isolated nodes without links are not displayed in the main graph.</td>
+</tr>
+<tr>
+<td>No history or flat trend</td>
+<td>A single current snapshot contains no past changes. Import historical observations or collect again after an actual change.</td>
+</tr>
+<tr>
+<td>No investigations</td>
+<td>Open an asset/finding and choose Start investigation; add a note and conclusion.</td>
+</tr>
+<tr>
+<td>Not recently assessed despite discovery</td>
+<td>Discovery is not a complete vulnerability assessment. Import a successful scoped assessment.</td>
+</tr>
+<tr>
+<td>Verify fails</td>
+<td>Check same asset, explicit finding code scope, recent/newer timestamp, processed status, and finding absent from results.</td>
+</tr>
+<tr>
+<td>TCP scan finds nothing</td>
+<td>Confirm lab/target reachability <strong>from the app server/container</strong>, configured ports, authorization and allowed CIDRs. For the isolated lab, start it with <code>scripts/start_lab.py</code> and use its printed configuration.</td>
+</tr>
+<tr>
+<td>HTTP test fails</td>
+<td>Check the app server can resolve/reach the endpoint, returns supported JSON, and has correct secret headers/TLS settings. <code>localhost</code> is blocked for HTTP destinations.</td>
+</tr>
+<tr>
+<td>Scheduled collection does not run</td>
+<td>Ensure schedule is above zero, integration enabled, worker/scheduler enabled and system heartbeats healthy; inspect jobs.</td>
+</tr>
+<tr>
+<td>KEV/LLM call fails</td>
+<td>It requires working internet, credentials where applicable and an available remote service. Use stored catalog/evidence mode when working offline.</td>
+</tr>
+<tr>
+<td>Import processed zero</td>
+<td>Check format/connector, identifiers, duplicates and rejected/failed counts. Retrying an unchanged imported record can correctly be a duplicate.</td>
+</tr>
+<tr>
+<td>Permission denied / expired session</td>
+<td>Sign in with a role permitted for the operation or renew the session.</td>
+</tr>
+</tbody>
+</table>
+<p>The separate <a href="OPERATOR_WALKTHROUGH.html">Operator walkthrough</a> maps each feature to an ordinary scan, import or analyst action. Optional missing values reflect absent source evidence; do not replace them with invented production facts.</p>
+</main></body></html>

@@ -1,0 +1,11 @@
+{
+  "data": [
+    {
+      "id": "ocid1.instance.oc1.eu-frankfurt-1.anrw0000000000000001",
+      "display-name": "data-lake-oci-01",
+      "shape": "VM.Standard.E4.Flex",
+      "lifecycle-state": "RUNNING",
+      "availability-domain": "AD-1"
+    }
+  ]
+}

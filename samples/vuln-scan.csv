@@ -1,0 +1,3 @@
+ip,hostname,cve,port,cvss,evidence
+10.10.6.12,intranet-web-02,CVE-2021-41773,80,7.5,authenticated scan
+172.31.10.9,orders-worker-aws-02,CVE-2021-44228,8443,10.0,authenticated scan

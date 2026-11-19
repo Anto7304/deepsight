@@ -1,0 +1,338 @@
+[
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "printer-02"
+      ],
+      "ip": [
+        "10.10.8.21"
+      ],
+      "mac": [
+        "52:54:00:0e:00:62"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Generic firmware",
+          "version": "3.4.1"
+        }
+      ],
+      "config": {
+        "vendor": "Generic",
+        "model": "laser printer",
+        "default_credentials": "no",
+        "telnet_enabled": "no",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:printer-02",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "printer-03"
+      ],
+      "ip": [
+        "10.10.8.22"
+      ],
+      "mac": [
+        "52:54:00:12:00:7e"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Generic firmware",
+          "version": "3.4.1"
+        }
+      ],
+      "config": {
+        "vendor": "Generic",
+        "model": "multifunction printer",
+        "default_credentials": "yes",
+        "telnet_enabled": "no",
+        "firmware_support": "end_of_life",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:printer-03",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "camera-iot-01"
+      ],
+      "ip": [
+        "10.10.8.40"
+      ],
+      "mac": [
+        "52:54:00:0f:00:69"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Hikvision firmware",
+          "version": "5.5.101"
+        }
+      ],
+      "config": {
+        "vendor": "Hikvision",
+        "model": "DS-2CD2043",
+        "default_credentials": "no",
+        "telnet_enabled": "yes",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:camera-iot-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "camera-iot-02"
+      ],
+      "ip": [
+        "10.10.8.41"
+      ],
+      "mac": [
+        "52:54:00:10:00:70"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Hikvision firmware",
+          "version": "5.7.3"
+        }
+      ],
+      "config": {
+        "vendor": "Hikvision",
+        "model": "DS-2CD2143",
+        "default_credentials": "no",
+        "telnet_enabled": "no",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:camera-iot-02",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "camera-iot-03"
+      ],
+      "ip": [
+        "10.10.8.42"
+      ],
+      "mac": [
+        "52:54:00:11:00:77"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Hikvision firmware",
+          "version": "5.4.7"
+        }
+      ],
+      "config": {
+        "vendor": "Hikvision",
+        "model": "DS-2CD2032",
+        "default_credentials": "yes",
+        "telnet_enabled": "yes",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:camera-iot-03",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "badge-reader-01"
+      ],
+      "ip": [
+        "10.10.8.60"
+      ],
+      "mac": [
+        "52:54:00:13:00:85"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Acme Access firmware",
+          "version": "1.8.2"
+        }
+      ],
+      "config": {
+        "vendor": "Acme Access",
+        "model": "AC-900",
+        "default_credentials": "yes",
+        "telnet_enabled": "no",
+        "firmware_support": "end_of_life",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:badge-reader-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "temp-gw-01"
+      ],
+      "ip": [
+        "10.10.8.70"
+      ],
+      "mac": [
+        "52:54:00:14:00:8c"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "Nordic Sensors firmware",
+          "version": "0.9.4"
+        }
+      ],
+      "config": {
+        "vendor": "Nordic Sensors",
+        "model": "TG-200",
+        "default_credentials": "no",
+        "telnet_enabled": "no",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "router-iot-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:temp-gw-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "iot_inventory",
+    "identifiers": {
+      "hostname": [
+        "router-iot-01"
+      ],
+      "ip": [
+        "10.10.8.1"
+      ],
+      "mac": [
+        "52:54:00:15:00:93"
+      ]
+    },
+    "attributes": {
+      "type": "iot_device",
+      "software": [
+        {
+          "product": "MikroTik firmware",
+          "version": "6.40.5"
+        }
+      ],
+      "config": {
+        "vendor": "MikroTik",
+        "model": "hEX",
+        "default_credentials": "no",
+        "telnet_enabled": "no",
+        "firmware_support": "unknown",
+        "lifecycle_source": "CMDB inventory"
+      },
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "fw-edge-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "iotinv:router-iot-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  }
+]

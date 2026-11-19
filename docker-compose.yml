@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: asivm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-asivm-local-db-password}
+      POSTGRES_DB: asivm
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U asivm -d asivm"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  app:
+    build: .
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      ASIVM_DATABASE_URL: postgresql+psycopg2://asivm:${POSTGRES_PASSWORD:-asivm-local-db-password}@db:5432/asivm
+      ASIVM_SECRET_KEY: ${ASIVM_SECRET_KEY:-}
+      ASIVM_ADMIN_USER: ${ASIVM_ADMIN_USER:-admin}
+      ASIVM_ADMIN_PASSWORD: ${ASIVM_ADMIN_PASSWORD:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ASIVM_WORKER: ${ASIVM_WORKER:-true}
+      ASIVM_SCHEDULER: ${ASIVM_SCHEDULER:-true}
+      ASIVM_ASSESSMENT_AGE_HOURS: ${ASIVM_ASSESSMENT_AGE_HOURS:-168}
+      ASIVM_RAW_RETENTION_DAYS: ${ASIVM_RAW_RETENTION_DAYS:-30}
+      ASIVM_TCP_ALLOWED_CIDRS: ${ASIVM_TCP_ALLOWED_CIDRS:-127.0.0.0/8,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
+      ASIVM_KEV_AUTO_SYNC: ${ASIVM_KEV_AUTO_SYNC:-false}
+    volumes: [asivm_data:/data]
+    ports: ["${ASIVM_PORT:-8000}:8000"]
+    restart: unless-stopped
+volumes:
+  pgdata:
+  asivm_data:

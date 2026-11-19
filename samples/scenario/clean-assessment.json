@@ -1,0 +1,26 @@
+[
+  {
+    "identifiers": {
+      "cloud_id": [
+        "i-0a1b2c3d4e5f60002"
+      ],
+      "hostname": [
+        "orders-worker-aws-02"
+      ]
+    },
+    "category": "security",
+    "observed_at": "2026-11-19T21:34:57Z",
+    "attributes": {
+      "findings": [],
+      "assessment": {
+        "kind": "vulnerability",
+        "status": "success",
+        "complete": true,
+        "finding_codes": [
+          "CVE-2021-44228"
+        ],
+        "scope": "Log4j check on orders-worker-aws-02"
+      }
+    }
+  }
+]

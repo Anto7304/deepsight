@@ -1,0 +1,6 @@
+[
+ {"question":"Why has the risk of app-server-01 increased?","expected_types":["asset","finding"]},
+ {"question":"Which findings should I prioritize?","expected_types":["finding"]},
+ {"question":"What is connected to app-server-01?","expected_types":["asset"]},
+ {"question":"What changed on app-server-01?","expected_types":["change"]}
+]

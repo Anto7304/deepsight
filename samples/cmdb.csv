@@ -1,0 +1,22 @@
+ip,hostname,mac,os,owner,criticality,type,tags,serial
+10.10.0.50,esx-host-01,52:54:00:01:00:07,VMware ESXi 8.0,Infrastructure,5,server,cmdb;managed,
+10.10.1.20,app-server-01,52:54:00:02:00:0e,Ubuntu 22.04,Payments Platform,4,server,cmdb;managed,
+10.10.2.10,db-server-01,52:54:00:03:00:15,Ubuntu 22.04,Data Engineering,5,server,cmdb;managed,
+10.10.0.5,web-proxy-01,52:54:00:04:00:1c,Linux 6.1 (Debian 12,Network Ops,4,server,cmdb;managed,
+10.10.0.25,mail-01,52:54:00:05:00:23,Linux 6.1 (Debian 12,IT Ops,3,server,cmdb;managed,
+10.10.3.15,files-01,52:54:00:06:00:2a,Microsoft Windows Server 2016,IT Ops,3,server,cmdb;managed,
+10.10.4.30,ci-server-01,52:54:00:07:00:31,Ubuntu 22.04,Engineering,4,server,cmdb;managed,
+10.10.4.40,dev-server-02,52:54:00:08:00:38,Ubuntu 22.04,Engineering,2,server,cmdb;managed,
+10.10.6.12,intranet-web-02,52:54:00:09:00:3f,Linux 4.18 (Rocky Linux 8,HR IT,2,server,cmdb;managed,
+10.10.7.8,legacy-nas-01,52:54:00:0a:00:46,Linux 3.10,IT Ops,2,server,cmdb;managed,
+10.10.0.1,fw-edge-01,52:54:00:0b:00:4d,FortiOS 7.2,Network Ops,5,network_device,cmdb;managed,
+10.10.0.2,switch-core-01,52:54:00:0c:00:54,Cisco IOS XE 17.9,Network Ops,5,network_device,cmdb;managed,
+10.10.0.3,switch-access-02,52:54:00:0d:00:5b,Cisco IOS XE 17.6,Network Ops,3,network_device,cmdb;managed,
+10.10.8.21,printer-02,52:54:00:0e:00:62,Linux 3.x (embedded,Facilities,1,iot_device,cmdb;managed,
+10.10.8.40,camera-iot-01,52:54:00:0f:00:69,Linux 3.x (embedded,Facilities,2,iot_device,cmdb;managed,
+10.10.5.41,ws-001.corp.example.com,52:54:00:65:00:c3,Microsoft Windows 11,Finance,2,workstation,cmdb;managed,SN32252717
+10.10.5.42,ws-002.corp.example.com,52:54:00:66:00:ca,Microsoft Windows 11,Finance,2,workstation,cmdb;managed,SN32252718
+10.10.5.43,ws-003.corp.example.com,52:54:00:67:00:d1,Apple macOS 14,Engineering,2,workstation,cmdb;managed,SN32252719
+10.10.5.44,ws-004.corp.example.com,52:54:00:68:00:d8,Microsoft Windows 11,HR,2,workstation,cmdb;managed,SN32252720
+10.10.5.45,ws-005.corp.example.com,52:54:00:69:00:df,Microsoft Windows 10,Sales,2,workstation,cmdb;managed,SN32252721
+10.10.5.46,ws-006.corp.example.com,,Microsoft Windows 11,Sales,2,workstation,cmdb;managed,SN32252722

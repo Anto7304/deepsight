@@ -1,0 +1,171 @@
+{
+  "independent": {
+    "identity": {
+      "independent": {
+        "n": 16,
+        "tp": 7,
+        "fp": 0,
+        "fn": 2,
+        "tn": 7,
+        "accuracy": 0.875,
+        "precision": 1.0,
+        "recall": 0.7778,
+        "false_merge_rate": 0.0
+      },
+      "analyst_feedback": {
+        "n": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": null,
+        "precision": null,
+        "recall": null,
+        "false_merge_rate": null
+      },
+      "combined": {
+        "n": 16,
+        "tp": 7,
+        "fp": 0,
+        "fn": 2,
+        "tn": 7,
+        "accuracy": 0.875,
+        "precision": 1.0,
+        "recall": 0.7778,
+        "false_merge_rate": 0.0
+      },
+      "metric_delta": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.0
+      },
+      "limitation": "Small curated fixtures; feedback is a selected cohort. No production generalization claim or automatic retraining. Anomaly labels mean warrants review, not malice."
+    },
+    "anomaly": {
+      "independent": {
+        "n": 12,
+        "tp": 5,
+        "fp": 2,
+        "fn": 0,
+        "tn": 5,
+        "accuracy": 0.8333,
+        "precision": 0.7143,
+        "recall": 1.0,
+        "false_alert_rate": 0.2857
+      },
+      "analyst_feedback": {
+        "n": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": null,
+        "precision": null,
+        "recall": null,
+        "false_alert_rate": null
+      },
+      "combined": {
+        "n": 12,
+        "tp": 5,
+        "fp": 2,
+        "fn": 0,
+        "tn": 5,
+        "accuracy": 0.8333,
+        "precision": 0.7143,
+        "recall": 1.0,
+        "false_alert_rate": 0.2857
+      },
+      "metric_delta": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.0
+      },
+      "limitation": "Small curated fixtures; feedback is a selected cohort. No production generalization claim or automatic retraining. Anomaly labels mean warrants review, not malice."
+    }
+  },
+  "with_simulated_feedback": {
+    "identity": {
+      "independent": {
+        "n": 16,
+        "tp": 7,
+        "fp": 0,
+        "fn": 2,
+        "tn": 7,
+        "accuracy": 0.875,
+        "precision": 1.0,
+        "recall": 0.7778,
+        "false_merge_rate": 0.0
+      },
+      "analyst_feedback": {
+        "n": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": null,
+        "precision": null,
+        "recall": null,
+        "false_merge_rate": null
+      },
+      "combined": {
+        "n": 16,
+        "tp": 7,
+        "fp": 0,
+        "fn": 2,
+        "tn": 7,
+        "accuracy": 0.875,
+        "precision": 1.0,
+        "recall": 0.7778,
+        "false_merge_rate": 0.0
+      },
+      "metric_delta": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "accuracy": 0.0
+      },
+      "limitation": "Small curated fixtures; feedback is a selected cohort. No production generalization claim or automatic retraining. Anomaly labels mean warrants review, not malice."
+    },
+    "anomaly": {
+      "independent": {
+        "n": 12,
+        "tp": 5,
+        "fp": 2,
+        "fn": 0,
+        "tn": 5,
+        "accuracy": 0.8333,
+        "precision": 0.7143,
+        "recall": 1.0,
+        "false_alert_rate": 0.2857
+      },
+      "analyst_feedback": {
+        "n": 1,
+        "tp": 0,
+        "fp": 1,
+        "fn": 0,
+        "tn": 0,
+        "accuracy": 0.0,
+        "precision": 0.0,
+        "recall": null,
+        "false_alert_rate": 1.0
+      },
+      "combined": {
+        "n": 13,
+        "tp": 5,
+        "fp": 3,
+        "fn": 0,
+        "tn": 5,
+        "accuracy": 0.7692,
+        "precision": 0.625,
+        "recall": 1.0,
+        "false_alert_rate": 0.375
+      },
+      "metric_delta": {
+        "precision": -0.0893,
+        "recall": 0.0,
+        "accuracy": -0.0641
+      },
+      "limitation": "Small curated fixtures; feedback is a selected cohort. No production generalization claim or automatic retraining. Anomaly labels mean warrants review, not malice."
+    }
+  },
+  "limitation": "Feedback sensitivity uses one simulated false-positive review, not customer analyst outcomes. No retraining or measured production improvement."
+}

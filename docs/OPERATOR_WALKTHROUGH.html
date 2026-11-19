@@ -1,0 +1,348 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DEEPSIGHT Operator walkthrough</title><style>body{margin:0;background:#f4f7fa;color:#18232e;font:16px/1.65 system-ui,Segoe UI,sans-serif}main{max-width:1080px;margin:auto;padding:38px 28px 80px;background:#fff}h1{font-size:34px;line-height:1.25;color:#123b49}h2{margin-top:44px;border-bottom:2px solid #d9e9ed;padding-bottom:9px;color:#123b49}h3{margin-top:28px}a{color:#076b84}code{background:#eff4f6;padding:2px 5px;border-radius:4px;font-size:.9em}pre{padding:18px;background:#172b37;color:#e6f2f4;overflow:auto;border-radius:7px;line-height:1.5}pre code{background:none;padding:0}table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;font-size:14px;margin:22px 0}th{background:#e9f1f4;text-align:left}td,th{border:1px solid #ccdade;padding:11px 13px;vertical-align:top}li{margin:6px 0}blockquote{border-left:4px solid #0b7e91;margin:20px 0;padding:2px 20px;background:#edf7f8}nav{background:#edf4f6;border:1px solid #d3e1e5;border-radius:8px;padding:18px 24px}nav ul{margin:0;padding-left:20px}small{color:#5b6e7b}@media print{body,main{background:white}main{padding:0;font-size:11pt;max-width:none}h2,h3{break-after:avoid}pre,table{break-inside:avoid}a{color:inherit;text-decoration:none}nav{display:none}}</style></head><body><main><h1>DEEPSIGHT operator walkthrough</h1><small>Updated 19 November 2026 · Browser readable and printable</small><nav aria-label="Contents"><b>Contents</b><ul><li><a href="#1-start-an-empty-working-environment">1. Start an empty working environment</a></li><li><a href="#2-scan-through-integrations">2. Scan through Integrations</a></li><li><a href="#3-import-inventory-through-the-ordinary-file-dialog">3. Import inventory through the ordinary file dialog</a></li><li><a href="#4-import-historical-evidence-and-train-the-anomaly-model">4. Import historical evidence and train the anomaly model</a></li><li><a href="#5-import-current-inventory-and-scanner-exports">5. Import current inventory and scanner exports</a></li><li><a href="#6-collect-an-http-source-and-prepare-notifications">6. Collect an HTTP source and prepare notifications</a></li><li><a href="#7-assign-and-triage-work">7. Assign and triage work</a></li><li><a href="#8-import-changed-evidence-and-review-anomalies">8. Import changed evidence and review anomalies</a></li><li><a href="#9-review-identities-and-dependencies">9. Review identities and dependencies</a></li><li><a href="#10-investigate-and-ask-the-assistant">10. Investigate and ask the assistant</a></li><li><a href="#11-import-a-fresh-assessment-and-verify-a-finding">11. Import a fresh assessment and verify a finding</a></li><li><a href="#12-search-export-and-inspect-administration">12. Search, export and inspect administration</a></li><li><a href="#13-feature-completion-checklist">13. Feature completion checklist</a></li><li><a href="#additional-feature-prerequisites">Additional feature prerequisites</a></li><li><a href="#finish-or-repeat">Finish or repeat</a></li></ul></nav>
+<p>Use this sequence to operate DEEPSIGHT through its ordinary screens: connect a source, scan, import evidence, review risk, investigate a change and verify remediation. No presentation page or special dashboard is required.</p>
+<p>The isolated lab provides reachable TCP devices, an HTTP inventory endpoint and an alert receiver. Prepared organization history, vulnerability exports and clean assessments describe a controlled fictional environment. They are practice evidence, not claims that cloud resources were provisioned or that a live device was patched. The system remains the normal DEEPSIGHT application throughout.</p>
+<p>Read the separate <a href="USER_MANUAL.html">User manual</a> for each feature's meaning. Use this document as the action sequence and feature checklist.</p>
+<h2 id="1-start-an-empty-working-environment">1. Start an empty working environment</h2>
+<p>Extract the application archive and open a terminal in the application folder:</p>
+<pre><code class="language-bash">python3 scripts/start_lab.py
+</code></pre>
+<p>This requires Python 3 and Docker Compose. Choose the administrator password at the hidden prompt, unless you supplied <code>ASIVM_ADMIN_PASSWORD</code>. The launcher starts a separate normal application and the isolated devices, but performs no collection or import.</p>
+<p>Open the printed application URL, normally <code>http://localhost:8001</code>, and sign in as the configured administrator, normally <code>admin</code>. Keep the terminal output available. It contains:</p>
+<ul>
+<li>The four target addresses and their hostnames.</li>
+<li>A complete authorized TCP configuration.</li>
+<li>The private HTTP inventory and alert receiver URL.</li>
+<li>The generated import directory, normally <code>data/deepsight-lab/imports</code>.</li>
+<li>The command to stop this named environment.</li>
+</ul>
+<p>The Docker launcher selects and saves a free subnet. Use its printed addresses and generated files rather than assuming a particular <code>172.28.*</code> range. On <strong>Overview</strong>, <strong>Assets</strong>, <strong>Findings</strong>, <strong>Investigations</strong> and <strong>Integrations</strong>, confirm that no infrastructure evidence has been collected. Bootstrap model/catalog information and the administrator account can already exist.</p>
+<p>An existing deployment keeps its previous data. To obtain a separate empty environment, use <code>python3 scripts/start_lab.py --fresh --port 8002</code>, choosing a free port. The launcher prints its generated deployment name and import directory.</p>
+<h3>Linux without Docker</h3>
+<p>Install the application dependencies in a Python environment, then run:</p>
+<pre><code class="language-bash">python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python3 scripts/start_lab.py --local
+</code></pre>
+<p>Local mode uses loopback devices at <code>127.0.0.2</code>–<code>127.0.0.5</code>. Its HTTP service binds to a private local interface, and its MQTT service is a protocol stub. Docker mode uses Mosquitto. Listener ports must be free. Use the addresses and generated import folder printed for this mode.</p>
+<h2 id="2-scan-through-integrations">2. Scan through Integrations</h2>
+<ol>
+<li>Open <strong>Integrations → Add integration</strong>.</li>
+<li>Name the source <strong>Network discovery</strong> and choose <strong>TCP connect discovery</strong>.</li>
+<li>Paste the launcher's TCP configuration into <strong>Configuration</strong>, or enter the printed targets, ports, hostnames and asset type in the discovery fields.</li>
+<li>Confirm <strong>I am authorised to scan these targets</strong>. Keep the collection schedule at zero for the first run.</li>
+<li>Choose <strong>Add integration</strong>, then <strong>Test</strong>. The test validates configuration and allowed ranges.</li>
+<li>Choose <strong>Collect</strong> or <strong>Collect now</strong>. Watch the source's run history until it records success.</li>
+<li>Open <strong>Assets</strong> and inspect the four discovered devices.</li>
+</ol>
+<p>Show the run's received/processed counts and one asset's <strong>Services</strong> and <strong>Observations</strong> tabs. The observations come from real TCP connections to the isolated devices. The camera, Telnet and SSH targets emulate protocol responses; they do not execute commands or accept real credentials.</p>
+<p>Owner, vendor and firmware fields can be absent after discovery because TCP connections do not supply business context. The next file import adds that information.</p>
+<p>If a scan fails, read its run error. Check the targets are reachable from the app server/container, the lab processes are running, authorization is true and the allowed CIDRs include the printed targets. A saved Nmap file exercises parsing; it does not replace a successful live collection.</p>
+<h2 id="3-import-inventory-through-the-ordinary-file-dialog">3. Import inventory through the ordinary file dialog</h2>
+<ol>
+<li>Open <strong>Integrations → Add integration</strong>.</li>
+<li>Name the source <strong>Device inventory</strong>, choose <strong>Generic observations (JSON)</strong>, and leave its schedule at zero.</li>
+<li>Save it, then choose <strong>Import file</strong>.</li>
+<li>Select the generated <code>lab-inventory.json</code> from the printed import directory.</li>
+<li>Choose <strong>Upload &amp; import</strong>, wait for the result, and inspect its processed/duplicate/rejected/failed counts.</li>
+<li>Open a discovered device and check its profile, identifiers, observations, services and findings.</li>
+</ol>
+<p>Both scan and inventory observations should be available on combined device profiles. If <strong>Intelligence → identity</strong> shows a probable match between a scanned IP/hostname record and a richer inventory record, compare the identifiers and source evidence. Choose <strong>Same asset (merge)</strong> only for a supported pair. Already confident matches combine automatically. Additional unresolved records or relationship placeholders can temporarily increase the asset count.</p>
+<p>Check owner, firmware/vendor context and <code>DS-IOT-*</code> configuration findings. These policy findings can have no assigned CVSS; use their explanation and contextual risk. A version inferred from a banner is not a complete firmware audit.</p>
+<h2 id="4-import-historical-evidence-and-train-the-anomaly-model">4. Import historical evidence and train the anomaly model</h2>
+<p>Add <strong>Historical inventory</strong> as a <strong>Generic observations (JSON)</strong> source. Import <code>baseline-history.json</code> from the generated folder through <strong>Import file → Upload &amp; import</strong>.</p>
+<p>This file contains dated observations over a past interval so DEEPSIGHT can record trends and change vectors. The import runs synchronously and can take several minutes. Keep the dialog open until it reports its result; an attempt or a spinning control is not a completed import.</p>
+<p>After success:</p>
+<ol>
+<li>Open <strong>Overview</strong> and inspect the trend, asset types and findings.</li>
+<li>Open <code>app-server-01</code> and inspect <strong>History</strong>, <strong>Services</strong>, <strong>Relationships</strong> and <strong>Risk</strong>.</li>
+<li>Open <strong>Intelligence → models</strong> and read the collected vector count.</li>
+<li>As administrator, choose <strong>Retrain anomaly model on platform data</strong> and confirm the action.</li>
+<li>Inspect the resulting active version and its training origin/metrics.</li>
+</ol>
+<p>At least 15 collected vectors are needed for platform data to participate in retraining. Retraining on an empty database uses bootstrap data. Model output is a reason to review a change, not proof of an attack.</p>
+<h2 id="5-import-current-inventory-and-scanner-exports">5. Import current inventory and scanner exports</h2>
+<p>Create each source below using <strong>Add integration</strong>, then upload the corresponding file from the generated <code>current/</code> directory. Source names identify operational data origins. Use the same integration again for the matching changed file later.</p>
+<table>
+<thead>
+<tr>
+<th>Source name</th>
+<th>Connector</th>
+<th>Current file</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CMDB inventory</td>
+<td>Host inventory (CSV)</td>
+<td><code>current/cmdb.csv</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Corporate network scan</td>
+<td>Nmap scan (XML)</td>
+<td><code>current/network-scan.xml</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>VMware inventory</td>
+<td>Generic observations (JSON)</td>
+<td><code>current/vcenter.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>AWS inventory</td>
+<td>AWS EC2 inventory (JSON)</td>
+<td><code>current/aws.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Azure inventory</td>
+<td>Azure VM inventory (JSON)</td>
+<td><code>current/azure.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>OCI inventory</td>
+<td>Oracle Cloud instances (JSON)</td>
+<td><code>current/oci.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Kubernetes inventory</td>
+<td>Kubernetes nodes/pods (JSON)</td>
+<td><code>current/kubernetes.json</code></td>
+<td><code>{&quot;cluster_name&quot;:&quot;prod-k8s&quot;}</code></td>
+</tr>
+<tr>
+<td>Application inventory</td>
+<td>Generic observations (JSON)</td>
+<td><code>current/applications.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Device management inventory</td>
+<td>Generic observations (JSON)</td>
+<td><code>current/devices.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Vulnerability scanner</td>
+<td>Vulnerability scan results (CSV/JSON)</td>
+<td><code>current/vulnerabilities.csv</code></td>
+<td>Default file configuration.</td>
+</tr>
+<tr>
+<td>Perimeter inventory</td>
+<td>Generic observations (JSON)</td>
+<td><code>current/perimeter.json</code></td>
+<td>Default file configuration.</td>
+</tr>
+</tbody>
+</table>
+<p>Check the generated <code>manifest.json</code> for file-to-connector mappings. Generic JSON, cloud JSON and scanner JSON structures differ despite sharing an extension. Select the matching connector.</p>
+<p>Inspect a successful run for each source, then visit:</p>
+<ul>
+<li><strong>Overview:</strong> asset types, exposure, findings and top contextual risks.</li>
+<li><strong>Assets:</strong> services, software, identifiers and source observations.</li>
+<li><strong>Infrastructure:</strong> connected graph nodes, relationship basis and recent changes.</li>
+<li><strong>Intelligence → catalog:</strong> CVEs, published scores and historical KEV information.</li>
+<li><strong>Intelligence → identity:</strong> any proposed uncertain match awaiting review.</li>
+</ul>
+<h2 id="6-collect-an-http-source-and-prepare-notifications">6. Collect an HTTP source and prepare notifications</h2>
+<p>The launcher prints an HTTP base URL reachable from the application server. Do not replace it with <code>localhost</code>; HTTP destinations reject loopback and metadata addresses.</p>
+<p>Add <strong>Asset API</strong> as an <strong>HTTP API collector (JSON)</strong> source. Set its configuration to the printed inventory URL with the generic mapper:</p>
+<pre><code class="language-json">{&quot;url&quot;:&quot;&lt;printed base URL&gt;/inventory&quot;,&quot;mapper&quot;:&quot;generic_json&quot;,&quot;timeout&quot;:5}
+</code></pre>
+<p>Replace the placeholder with the actual URL. Save the integration, run <strong>Test</strong>, then <strong>Collect</strong>. Inspect its completed run and corresponding observations. Set a positive collection schedule if you want to show a later automatic run; leave worker and scheduler enabled.</p>
+<p>Before importing changed findings, add <strong>Security alerts</strong> as an <strong>Outbound finding webhook</strong> integration with:</p>
+<pre><code class="language-json">{&quot;url&quot;:&quot;&lt;printed base URL&gt;/webhook&quot;}
+</code></pre>
+<p>Keep secrets empty for this isolated receiver. <strong>Test</strong> checks the URL; it sends no event. New eligible critical or KEV findings queue notifications. Repeated evidence is deduplicated. The receiver must exist before the new eligible evidence is ingested.</p>
+<p>Delivery status is available at <code>/api/webhooks/deliveries</code>; jobs are at <code>/api/jobs</code>. Use <code>/api/docs</code> with your signed-in Bearer token for these advanced API views. The receiver's <code>/receipts</code> endpoint lets you inspect accepted payloads on the private lab address.</p>
+<h2 id="7-assign-and-triage-work">7. Assign and triage work</h2>
+<p>Open <strong>Work queue</strong>, read “Why this needs attention,” and choose a high-priority finding.</p>
+<ol>
+<li>Review the finding's published or policy description, source evidence, freshness and contextual factors.</li>
+<li>Enter an owner such as <strong>Payments team</strong>, a due date and remediation guidance.</li>
+<li>Set <code>in_progress</code> and choose <strong>Save workflow</strong>.</li>
+<li>Return to the queue, filter by owner and save the filter as <strong>Payments remediation</strong>.</li>
+<li>Select two open findings and use <strong>Bulk triage</strong> to apply an owner and state. Reopen a finding to verify the saved workflow.</li>
+<li>On a suitable open finding, exercise <code>accepted_risk</code> or <code>false_positive</code> with its own reason, approver and future expiry. Save and inspect the recorded exception.</li>
+</ol>
+<p>An exception records a decision; it is not a verified fix. A ticket URL records a reference and does not create a ticket or send a message. Choose <strong>What if this finding is fixed?</strong> on an open finding to inspect the calculated risk change. A zero reduction can be valid when another finding dominates the asset score.</p>
+<h2 id="8-import-changed-evidence-and-review-anomalies">8. Import changed evidence and review anomalies</h2>
+<p>For every source in the current-file table, use <strong>Import file</strong> again and upload the matching filename from <code>drift/</code>. Do not create another integration for its changed snapshot.</p>
+<p>The changed snapshots introduce service/exposure/configuration changes such as exposed AJP on <code>app-server-01</code>, SMBv1 and IoT management drift. Refresh <strong>Overview</strong>, <strong>Infrastructure</strong> and <strong>Intelligence → anomalies</strong> after successful imports.</p>
+<p>On <code>app-server-01</code>, compare <strong>History</strong>, <strong>Services</strong> and <strong>Risk</strong> with prior observations. Look for a model alert with its score, threshold and contributors. Use <strong>True positive</strong>, <strong>False positive</strong> or <strong>Reviewed</strong> to record an appropriate review outcome. A legitimate but unusual change can be a true-positive anomaly; the decision does not establish malicious activity.</p>
+<p>Wait for the worker to dispatch eligible alerts, then inspect <code>/api/webhooks/deliveries</code> and the private receiver. If none are delivered, check receiver reachability, integration enabled state, eligible new findings and job/error output. A failed or merely queued attempt is not a delivered alert.</p>
+<h2 id="9-review-identities-and-dependencies">9. Review identities and dependencies</h2>
+<p>Open <strong>Intelligence → identity</strong>. Compare the proposed observation/candidate pair and confidence with source evidence. Choose <strong>Same asset (merge)</strong> for a supported pair, then <strong>Revert decision</strong> to practice correcting it. Choose <strong>Separate</strong> for an unsupported match.</p>
+<p>In <strong>Infrastructure</strong>, select <code>ci-server-01</code> or another connected asset. Inspect related assets, edge labels and inferred-link controls. On an asset's Overview tab, inspect <strong>Impact if compromised</strong>. These panels describe recorded dependencies, not a proven attack path.</p>
+<h2 id="10-investigate-and-ask-the-assistant">10. Investigate and ask the assistant</h2>
+<p>From <code>app-server-01</code> or one of its findings, choose <strong>Start investigation</strong>. Add a note such as:</p>
+<blockquote>
+<p>Reviewed network and scanner observations. A new service exposure requires remediation and a follow-up assessment.</p>
+</blockquote>
+<p>Choose <strong>Ask assistant</strong> from the sidebar. Try:</p>
+<ol>
+<li>“Why has the risk of app-server-01 increased?”</li>
+<li>“What is connected to ci-server-01?”</li>
+<li>“What changed in the last 24 hours?”</li>
+</ol>
+<p>Follow the answer's references to stored records. The built-in evidence mode works without an external key. The assistant cannot patch, scan or close findings on your behalf.</p>
+<p>Return to the investigation, select an outcome, write a conclusion and choose <strong>Validate &amp; close</strong>. Confirm the timeline, attribution and closed status. Closing a case does not verify its underlying vulnerabilities; the next step does that separately.</p>
+<h2 id="11-import-a-fresh-assessment-and-verify-a-finding">11. Import a fresh assessment and verify a finding</h2>
+<p>The prepared clean assessment targets <code>CVE-2021-44228</code> on <code>orders-worker-aws-02</code>. Refresh its timestamp <strong>after</strong> the latest changed finding evidence was imported:</p>
+<pre><code class="language-bash">python3 scripts/prepare_imports.py --output data/deepsight-lab/imports --verification-only
+</code></pre>
+<p>Use the actual folder printed for your deployment. This refreshes the assessment file only and makes no database decision.</p>
+<ol>
+<li>Add <strong>Verification scan</strong> as a <strong>Generic observations (JSON)</strong> integration.</li>
+<li>Import the regenerated <code>clean-assessment.json</code> through <strong>Import file → Upload &amp; import</strong>.</li>
+<li>Open <code>orders-worker-aws-02</code> in <strong>Assets → Observations</strong>.</li>
+<li>Open the newest processed record from <strong>Verification scan</strong>. Check its timestamp, complete assessment scope and empty findings list. Note its observation ID.</li>
+<li>Open the target Log4j finding and optionally save <code>pending_verification</code>.</li>
+<li>Enter the observation ID in <strong>Verification observation ID</strong> and choose <strong>Verify and close</strong>.</li>
+<li>Confirm resolved status and stored before/after verification evidence.</li>
+</ol>
+<p>The file rehearses a scoped assessment; it does not patch a live device. A missing CVE row in a CSV or a closed TCP port cannot establish a complete vulnerability assessment. Verification rejects old evidence, the wrong asset, missing scope, or results that still report the finding.</p>
+<h2 id="12-search-export-and-inspect-administration">12. Search, export and inspect administration</h2>
+<p>Use <strong>Global search</strong> for <code>app-server-01</code>, a finding code and the investigation title. Follow the matching detail links.</p>
+<p>On <strong>Reports</strong>, export each category as <strong>HTML</strong>, <strong>CSV</strong> and <strong>JSON</strong>. The categories cover infrastructure inventory, identity reconciliation, vulnerabilities, contextual risk, changes, anomalies, posture and investigations. Inspect their rows, sources, scope and limitations. The investigation report gains content only after a case is created.</p>
+<p>On <strong>Administration → users</strong>, create a readonly or manager account with a password of at least 12 characters. Sign out, sign in as that account and verify appropriate read/review permissions. Return to the administrator for collections and final checks.</p>
+<p>On <strong>Administration → audit</strong>, inspect records attributed to the acting account. On <strong>system</strong>, inspect API/database and scheduler status; <code>/api/health</code> provides the worker readiness check. A <strong>Lifecycle sweep</strong> can update old unseen assets and does not scan them.</p>
+<h2 id="13-feature-completion-checklist">13. Feature completion checklist</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Normal trigger</th>
+<th>Evidence to show</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empty first start</td>
+<td>Start a separate new environment.</td>
+<td>No collected assets, findings, integrations or investigations.</td>
+</tr>
+<tr>
+<td>Live discovery</td>
+<td>Add TCP source → Test → Collect.</td>
+<td>Four reachable devices, service evidence and a successful run.</td>
+</tr>
+<tr>
+<td>Import and correlation</td>
+<td>Add inventory source → Import file.</td>
+<td>Combined profiles, source observations and identity decisions where needed.</td>
+</tr>
+<tr>
+<td>Vendor/cloud/container/scanner formats</td>
+<td>Upload each matching <code>current/</code> export.</td>
+<td>Source-specific observations and successful run history.</td>
+</tr>
+<tr>
+<td>IoT intelligence</td>
+<td>Live collection plus device inventory metadata.</td>
+<td>Configuration findings and contextual factors.</td>
+</tr>
+<tr>
+<td>CVE/KEV/exposure/risk</td>
+<td>Scanner/current evidence, then changed exports.</td>
+<td>CVSS versus contextual risk and recorded evidence basis.</td>
+</tr>
+<tr>
+<td>Trends and change history</td>
+<td>Historical observations followed by current/changed snapshots.</td>
+<td>Dated trends, service/configuration changes and score history.</td>
+</tr>
+<tr>
+<td>Graph and impact</td>
+<td>Relationship/Kubernetes imports.</td>
+<td>Connected nodes, edge confidence/basis and impact panels.</td>
+</tr>
+<tr>
+<td>Anomaly model and review</td>
+<td>Baseline → retrain → changed import → review.</td>
+<td>Threshold, contributors and feedback status.</td>
+</tr>
+<tr>
+<td>Identity and correction</td>
+<td>Review probable pair → merge/separate/revert.</td>
+<td>Recorded evidence and reversible decision.</td>
+</tr>
+<tr>
+<td>Queue and filters</td>
+<td>Save workflow → filter/save → bulk triage.</td>
+<td>Prioritization reasons, saved query and changed ownership/state.</td>
+</tr>
+<tr>
+<td>Exceptions</td>
+<td>Accepted risk/false positive with reason, approver and future expiry.</td>
+<td>Recorded exception without a false claim of verified remediation.</td>
+</tr>
+<tr>
+<td>What-if</td>
+<td>Open finding → What if this finding is fixed?</td>
+<td>Calculated score change and limitation.</td>
+</tr>
+<tr>
+<td>Assessment freshness</td>
+<td>Import recent complete scoped assessment.</td>
+<td>Source, timestamp and assessed finding codes.</td>
+</tr>
+<tr>
+<td>Verified closure</td>
+<td>Import clean record → use its observation ID in Verify and close.</td>
+<td>Resolved finding and verification evidence.</td>
+</tr>
+<tr>
+<td>Investigation</td>
+<td>Start case → note → conclusion/outcome → validate.</td>
+<td>Timeline, attribution and closed case.</td>
+</tr>
+<tr>
+<td>Assistant</td>
+<td>Ask evidence-based questions after imports.</td>
+<td>Grounded response and references.</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>Existing name, CVE or case title.</td>
+<td>Matching records and working links.</td>
+</tr>
+<tr>
+<td>Reports</td>
+<td>Export after evidence and a case exist.</td>
+<td>All eight categories in three formats.</td>
+</tr>
+<tr>
+<td>Users/roles/audit</td>
+<td>Create account, sign in and perform permitted actions.</td>
+<td>Appropriate controls and attributed audit records.</td>
+</tr>
+<tr>
+<td>HTTP/schedules/jobs</td>
+<td>Add HTTP source → Test → Collect/schedule.</td>
+<td>Successful observations and completed work.</td>
+</tr>
+<tr>
+<td>Notifications</td>
+<td>Add receiver integration before eligible new findings.</td>
+<td>Delivered status and receiver receipts.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="additional-feature-prerequisites">Additional feature prerequisites</h2>
+<p>NVD and EPSS imports, custom relationship edits, jobs, metrics and notification delivery records are API functions rather than extra presentation screens. The <a href="USER_MANUAL.html">User manual</a> describes their routes and required evidence. Optional package exports are in <code>package-scans/</code>, and local intelligence fixtures are in <code>intelligence/</code>; check <code>manifest.json</code> for their connector/API mapping.</p>
+<p>Live <strong>Sync CISA KEV</strong> requires internet access and the remote service. Optional LLM assistant mode requires a valid <code>ANTHROPIC_API_KEY</code> and a reachable service; the evidence mode remains usable offline. Backup, restore and retention should be exercised in a separate disposable environment rather than by deleting active evidence merely to populate a screen.</p>
+<p>No finding, anomaly or optional field should be invented to fill a blank panel. An unassigned CVSS on a configuration policy or missing firmware data has a specific source explanation. When a required feature is empty, use the checklist's trigger and confirm its run/evidence succeeded.</p>
+<h2 id="finish-or-repeat">Finish or repeat</h2>
+<p>Stop the environment with the command printed by <code>scripts/start_lab.py</code>. Stopping preserves its data. Use a fresh named deployment and free port for a new empty run. The operational interface remains unchanged; repeat the same ordinary scan, import, analyst and report actions.</p>
+<p>For an optional automated rehearsal of those same APIs:</p>
+<pre><code class="language-bash">python3 scripts/run_scenario.py --url http://localhost:8001 --imports data/deepsight-lab/imports
+</code></pre>
+<p>Use the printed URL and import directory. This is an explicit test action that performs collections/imports and analyst decisions; the default launcher does not do it. Its evidence output can be retained as a validation record.</p>
+</main></body></html>

@@ -1,0 +1,266 @@
+[
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "app-server-01"
+      ],
+      "device_id": [
+        "42234248-aaaa-bbbb-cccc-003839104248"
+      ],
+      "ip": [
+        "10.10.1.20"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 5.15 (Ubuntu 22.04)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:app-server-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "db-server-01"
+      ],
+      "device_id": [
+        "42231405-aaaa-bbbb-cccc-000654221405"
+      ],
+      "ip": [
+        "10.10.2.10"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 5.15 (Ubuntu 22.04)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:db-server-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "web-proxy-01"
+      ],
+      "device_id": [
+        "42237664-aaaa-bbbb-cccc-001831437664"
+      ],
+      "ip": [
+        "10.10.0.5"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 6.1 (Debian 12)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:web-proxy-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "mail-01"
+      ],
+      "device_id": [
+        "42233830-aaaa-bbbb-cccc-003023563830"
+      ],
+      "ip": [
+        "10.10.0.25"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 6.1 (Debian 12)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:mail-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "files-01"
+      ],
+      "device_id": [
+        "42237398-aaaa-bbbb-cccc-000870427398"
+      ],
+      "ip": [
+        "10.10.3.15"
+      ]
+    },
+    "attributes": {
+      "os": "Microsoft Windows Server 2016",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:files-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "ci-server-01"
+      ],
+      "device_id": [
+        "42232083-aaaa-bbbb-cccc-002610182083"
+      ],
+      "ip": [
+        "10.10.4.30"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 5.15 (Ubuntu 22.04)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:ci-server-01",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "dev-server-02"
+      ],
+      "device_id": [
+        "42236823-aaaa-bbbb-cccc-003634916823"
+      ],
+      "ip": [
+        "10.10.4.40"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 5.15 (Ubuntu 22.04)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:dev-server-02",
+    "observed_at": "2026-11-19T21:29:57Z"
+  },
+  {
+    "category": "virtualization",
+    "identifiers": {
+      "hostname": [
+        "intranet-web-02"
+      ],
+      "device_id": [
+        "42234804-aaaa-bbbb-cccc-003070144804"
+      ],
+      "ip": [
+        "10.10.6.12"
+      ]
+    },
+    "attributes": {
+      "os": "Linux 4.18 (Rocky Linux 8)",
+      "relations": [
+        {
+          "type": "runs_on",
+          "direction": "out",
+          "target": {
+            "hostname": "esx-host-01"
+          }
+        }
+      ],
+      "config": {
+        "vcpu": 4,
+        "memory_gb": 16,
+        "vm_tools": "running"
+      }
+    },
+    "raw_ref": "vcenter:intranet-web-02",
+    "observed_at": "2026-11-19T21:29:57Z"
+  }
+]

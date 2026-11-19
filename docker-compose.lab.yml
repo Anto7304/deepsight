@@ -1,0 +1,53 @@
+# Throwaway IoT lab: four fake devices on an isolated network that only the DEEPSIGHT app container can reach.
+#   docker compose -f docker-compose.yml -f docker-compose.lab.yml up --build -d
+#   python lab/scan_lab.py
+# Tear down:  docker compose -f docker-compose.yml -f docker-compose.lab.yml down
+# Nothing here publishes a port to your host. The devices are deliberately insecure - never attach them to a real network.
+x-sim: &sim
+  build: ./lab/iot-sim
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  sysctls: {net.ipv4.ip_unprivileged_port_start: 0}   # lets the non-root user bind 23/80/554
+  restart: unless-stopped
+
+services:
+  app:
+    networks: {default: {}, iotlab: {}}
+  lab-camera-01:       # web admin (default credentials) + RTSP
+    <<: *sim
+    hostname: lab-camera-01
+    environment: {ROLE: camera}
+    networks: {iotlab: {ipv4_address: "${ASIVM_LAB_PREFIX:-172.28.50}.10"}}
+  lab-telnet-01:       # legacy Telnet device
+    <<: *sim
+    hostname: lab-telnet-01
+    environment: {ROLE: telnet}
+    networks: {iotlab: {ipv4_address: "${ASIVM_LAB_PREFIX:-172.28.50}.11"}}
+  lab-gateway-01:      # old Dropbear SSH banner + status page
+    <<: *sim
+    hostname: lab-gateway-01
+    environment: {ROLE: gateway}
+    networks: {iotlab: {ipv4_address: "${ASIVM_LAB_PREFIX:-172.28.50}.12"}}
+  lab-mqtt-01:         # real Mosquitto, anonymous and without TLS
+    image: eclipse-mosquitto:2
+    hostname: lab-mqtt-01
+    volumes: ["./lab/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"]
+    security_opt: ["no-new-privileges:true"]
+    networks: {iotlab: {ipv4_address: "${ASIVM_LAB_PREFIX:-172.28.50}.13"}}
+    restart: unless-stopped
+
+  inventory-api:             # inventory JSON and HTTP alert receiver, lab network only
+    build: ./lab/feed
+    environment: {LAB_MQTT_IP: "${ASIVM_LAB_PREFIX:-172.28.50}.13"}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    networks: {iotlab: {ipv4_address: "${ASIVM_LAB_PREFIX:-172.28.50}.20"}}
+    restart: unless-stopped
+
+networks:
+  iotlab:
+    driver: bridge
+    internal: true          # no route to the outside world or the host
+    ipam: {config: [{subnet: "${ASIVM_LAB_PREFIX:-172.28.50}.0/24"}]}

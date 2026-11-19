@@ -1,0 +1,138 @@
+[
+  {
+    "category": "application_inventory",
+    "identifiers": {
+      "hostname": [
+        "payments-api-7d9c5b6f4-x2k8p"
+      ],
+      "ip": [
+        "10.244.1.17"
+      ]
+    },
+    "attributes": {
+      "software": [
+        {
+          "product": "log4j-core",
+          "version": "2.14.1"
+        }
+      ],
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "db-server-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "appinv:payments-api-7d9c5b6f4-x2k8p",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "application_inventory",
+    "identifiers": {
+      "hostname": [
+        "orders-web-5f6b7c8d9-q7m2z"
+      ],
+      "ip": [
+        "10.244.2.23"
+      ]
+    },
+    "attributes": {
+      "software": [],
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "payments-api-7d9c5b6f4-x2k8p"
+          }
+        }
+      ]
+    },
+    "raw_ref": "appinv:orders-web-5f6b7c8d9-q7m2z",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "application_inventory",
+    "identifiers": {
+      "hostname": [
+        "app-server-01"
+      ],
+      "ip": [
+        "10.10.1.45"
+      ]
+    },
+    "attributes": {
+      "software": [
+        {
+          "product": "apache-tomcat",
+          "version": "9.0.30"
+        }
+      ],
+      "config": {
+        "ssh_permit_root_login": "yes"
+      },
+      "relations": [
+        {
+          "type": "depends_on",
+          "direction": "out",
+          "target": {
+            "hostname": "db-server-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "appinv:app-server-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "application_inventory",
+    "identifiers": {
+      "hostname": [
+        "ci-server-01"
+      ],
+      "ip": [
+        "10.10.4.30"
+      ]
+    },
+    "attributes": {
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "app-server-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "appinv:ci-server-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  },
+  {
+    "category": "application_inventory",
+    "identifiers": {
+      "hostname": [
+        "web-proxy-01"
+      ],
+      "ip": [
+        "10.10.0.5"
+      ]
+    },
+    "attributes": {
+      "relations": [
+        {
+          "type": "connects_to",
+          "direction": "out",
+          "target": {
+            "hostname": "app-server-01"
+          }
+        }
+      ]
+    },
+    "raw_ref": "appinv:web-proxy-01",
+    "observed_at": "2026-11-19T21:31:57Z"
+  }
+]

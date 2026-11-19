@@ -1,0 +1,131 @@
+{
+  "generated_at": "2026-11-19T21:34:57Z",
+  "imports": [
+    {
+      "file": "current/cmdb.csv",
+      "drift_file": "drift/cmdb.csv",
+      "source": "CMDB inventory",
+      "kind": "csv_hosts",
+      "category": "cmdb",
+      "config": {}
+    },
+    {
+      "file": "current/network-scan.xml",
+      "drift_file": "drift/network-scan.xml",
+      "source": "Corporate network scan",
+      "kind": "nmap_xml",
+      "category": "infrastructure",
+      "config": {}
+    },
+    {
+      "file": "current/vcenter.json",
+      "drift_file": "drift/vcenter.json",
+      "source": "VMware inventory",
+      "kind": "generic_json",
+      "category": "virtualization",
+      "config": {}
+    },
+    {
+      "file": "current/aws.json",
+      "drift_file": "drift/aws.json",
+      "source": "AWS inventory",
+      "kind": "aws_ec2",
+      "category": "cloud",
+      "config": {}
+    },
+    {
+      "file": "current/azure.json",
+      "drift_file": "drift/azure.json",
+      "source": "Azure inventory",
+      "kind": "azure_vm",
+      "category": "cloud",
+      "config": {}
+    },
+    {
+      "file": "current/oci.json",
+      "drift_file": "drift/oci.json",
+      "source": "OCI inventory",
+      "kind": "oci_instances",
+      "category": "cloud",
+      "config": {}
+    },
+    {
+      "file": "current/kubernetes.json",
+      "drift_file": "drift/kubernetes.json",
+      "source": "Kubernetes inventory",
+      "kind": "k8s_json",
+      "category": "container",
+      "config": {
+        "cluster_name": "prod-k8s"
+      }
+    },
+    {
+      "file": "current/applications.json",
+      "drift_file": "drift/applications.json",
+      "source": "Application inventory",
+      "kind": "generic_json",
+      "category": "infrastructure",
+      "config": {}
+    },
+    {
+      "file": "current/devices.json",
+      "drift_file": "drift/devices.json",
+      "source": "Device management inventory",
+      "kind": "generic_json",
+      "category": "iot",
+      "config": {}
+    },
+    {
+      "file": "current/vulnerabilities.csv",
+      "drift_file": "drift/vulnerabilities.csv",
+      "source": "Vulnerability scanner",
+      "kind": "vuln_scan",
+      "category": "security",
+      "config": {}
+    },
+    {
+      "file": "current/perimeter.json",
+      "drift_file": "drift/perimeter.json",
+      "source": "Perimeter inventory",
+      "kind": "generic_json",
+      "category": "infrastructure",
+      "config": {}
+    }
+  ],
+  "scan_source": {
+    "name": "Network discovery",
+    "kind": "tcp_discovery",
+    "config_file": "scan-config.json"
+  },
+  "lab_inventory_source": {
+    "name": "Device inventory",
+    "kind": "generic_json",
+    "file": "lab-inventory.json"
+  },
+  "history_source": {
+    "name": "Historical inventory",
+    "kind": "generic_json",
+    "file": "baseline-history.json"
+  },
+  "http_source": {
+    "name": "Asset API",
+    "kind": "http_json",
+    "config": {
+      "url": "http://172.28.50.20:8081/inventory",
+      "mapper": "generic_json",
+      "timeout": 5
+    }
+  },
+  "webhook_source": {
+    "name": "Security alerts",
+    "kind": "outbound_webhook",
+    "config": {
+      "url": "http://172.28.50.20:8081/webhook"
+    }
+  },
+  "verification_source": {
+    "name": "Verification scan",
+    "kind": "generic_json",
+    "file": "clean-assessment.json"
+  }
+}

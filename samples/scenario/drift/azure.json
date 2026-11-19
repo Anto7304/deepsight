@@ -1,0 +1,44 @@
+[
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/rg-corp/providers/Microsoft.Compute/virtualMachines/finance-vm-az-01",
+    "vmId": "9f3c1a10-0000-4000-8000-000000000001",
+    "name": "finance-vm-az-01",
+    "privateIps": "10.20.1.4",
+    "publicIps": "",
+    "powerState": "running",
+    "location": "westeurope",
+    "resourceGroup": "rg-corp",
+    "hardwareProfile": {
+      "vmSize": "Standard_D4s_v5"
+    },
+    "storageProfile": {
+      "osDisk": {
+        "osType": "Windows"
+      }
+    },
+    "tags": {
+      "env": "prod"
+    }
+  },
+  {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/rg-corp/providers/Microsoft.Compute/virtualMachines/analytics-vm-az-02",
+    "vmId": "9f3c2a10-0000-4000-8000-000000000002",
+    "name": "analytics-vm-az-02",
+    "privateIps": "10.20.2.4",
+    "publicIps": "",
+    "powerState": "running",
+    "location": "westeurope",
+    "resourceGroup": "rg-corp",
+    "hardwareProfile": {
+      "vmSize": "Standard_D4s_v5"
+    },
+    "storageProfile": {
+      "osDisk": {
+        "osType": "Linux"
+      }
+    },
+    "tags": {
+      "env": "prod"
+    }
+  }
+]

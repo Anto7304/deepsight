@@ -1,0 +1,6 @@
+$ ruff check app lab scripts tests
+All checks passed!
+$ node --check app/static/app.js
+ok
+$ python -m compileall -q app lab scripts
+ok
